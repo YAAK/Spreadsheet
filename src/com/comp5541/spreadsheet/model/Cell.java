@@ -5,7 +5,9 @@
  * @Modified by:
  * @date 2013.1.18
  */
-package com.comp5541.spreadsheet;
+package com.comp5541.spreadsheet.model;
+
+import com.comp5541.spreadsheet.exceptions.InvalidFormulaException;
 
 import de.congrace.exp4j.Calculable;
 import de.congrace.exp4j.ExpressionBuilder;
@@ -17,6 +19,81 @@ public class Cell {
 	protected String sCellname;
 	protected final Double nDefaultValue = 0.0;
 	protected String sFormula = null;
+	public String getColumnName()
+	{
+		return nColumnName;
+	}
+
+
+
+	public void setColumnName(String nColumnName)
+	{
+		this.nColumnName = nColumnName;
+	}
+
+
+
+	public String getCellname()
+	{
+		return sCellname;
+	}
+
+
+
+	public void setCellname(String sCellname)
+	{
+		this.sCellname = sCellname;
+	}
+
+
+
+	public String getFormula()
+	{
+		return sFormula;
+	}
+
+
+
+	public void setFormula(String sFormula)
+	{
+		this.sFormula = sFormula;
+	}
+
+
+
+	public Double getValue()
+	{
+		return nValue;
+	}
+
+
+
+	public void setValue(Double nValue)
+	{
+		this.nValue = nValue;
+	}
+
+
+
+	public boolean isValid()
+	{
+		return bValid;
+	}
+
+
+
+	public void setValid(boolean bValid)
+	{
+		this.bValid = bValid;
+	}
+
+
+
+	public Double getDefaultValue()
+	{
+		return nDefaultValue;
+	}
+
 	protected Double nValue = null;
 	boolean bValid = false;
 
@@ -199,10 +276,11 @@ public class Cell {
 
 	/**
 	 * For user to view content of cell value, to be used for usecase 2
+	 * @throws InvalidFormulaException 
 	 * @throws UnparsableExpressionException 
 	 * @throws UnknownFunctionException 
 	 */
-	public String getCellValue(Cell cells[][]){
+	public String getCellValue(Cell cells[][]) throws InvalidFormulaException{
 		String ret = "";
 		if(this.sFormula != null) {// if this cell has formula,
 			// first validate it
@@ -213,11 +291,11 @@ public class Cell {
 					this.computeValue(result);
 					ret = this.nValue.toString();
 				}else{
-					ret = "InvalidFormula";
+					throw new InvalidFormulaException();
 				}
 				
 			}else{
-				ret="InvalidFormula";
+				throw new InvalidFormulaException();
 			}
 						
 		}else if (this.nValue == null) {// if this cell is empty

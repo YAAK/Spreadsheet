@@ -1,4 +1,4 @@
-package com.comp5541.spreadsheet;
+package com.comp5541.spreadsheet.tests;
 
 import org.junit.runner.*;
 import org.junit.runners.*;

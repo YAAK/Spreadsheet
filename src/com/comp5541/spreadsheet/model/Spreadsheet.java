@@ -4,13 +4,15 @@
  * @Modified by:
  * @date 2013.1.18
  */
-package com.comp5541.spreadsheet;
+package com.comp5541.spreadsheet.model;
 public class Spreadsheet {
 	Cell cells[][];
+
 	int nColumns;
 	int nRows;
 	Cell selectedCell = null;
 
+	
 	public Spreadsheet(){
 		cells = new Cell[10][11];
 		String column[] ="ABCDEFGHIJK".split(""); 
@@ -78,8 +80,41 @@ public class Spreadsheet {
 			e.printStackTrace();
 			return ret;
 		}
-		
-		
+	}
+
+	/**
+	 * Method to get the selected cell
+	 * @return Selected cell
+	 */
+	public Cell getSelectedCell()
+	{
+		return selectedCell;
 	}
 	
+	/**
+	 * Method to set the selected cell
+	 * @param selectedCell
+	 */
+	public void setSelectedCell(Cell selectedCell)
+	{
+		this.selectedCell = selectedCell;
+	}
+
+	/**
+	 * Method to get spreadsheet cells
+	 * @return Cell[][] (spreadsheet cells)
+	 */
+	public Cell[][] getCells()
+	{
+		return cells;
+	}
+	
+	/**
+	 * Method to set the spreadsheet cells
+	 * @param cells spreadsheet cells
+	 */
+	public void setCells(Cell[][] cells)
+	{
+		this.cells = cells;
+	}
 }

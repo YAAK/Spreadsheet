@@ -4,7 +4,7 @@
  * @Modified by:
  * @date 2013.1.18
  */
-package com.comp5541.spreadsheet;
+package com.comp5541.spreadsheet.controller;
 
 import java.io.File;
 import java.util.Scanner;
@@ -12,11 +12,22 @@ import java.util.Scanner;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 
-public class Controller implements TableModelListener{
+import com.comp5541.spreadsheet.model.Spreadsheet;
+import com.comp5541.spreadsheet.model.SpreadsheetTableModel;
 
+public class Controller implements TableModelListener{
+	
+	//controller
+	private static Controller controller = new Controller();
+	
+	//model - contains spreadsheet data
+	SpreadsheetTableModel model = new SpreadsheetTableModel();
+	
 	/**
 	 * @param args
 	 */
+	/*
+	 
 	Scanner scanner = new Scanner(System.in);
 
 	public void printMenu(){
@@ -173,21 +184,39 @@ public class Controller implements TableModelListener{
 		}
 
 	}
-
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		Controller controller = new Controller();
-		Spreadsheet spreadsheet = new Spreadsheet();
-		SpreadsheetTableModel model = new SpreadsheetTableModel();
-		model.addTableModelListener(controller);
-		controller.runSpreadsheet(spreadsheet);
-
-	}
-	@Override
-	public void tableChanged(TableModelEvent arg0)
+	*/
+	
+	/**
+	 * to return the single instance of controller - Singleton pattern
+	 * @return The instance of the Controller
+	 */
+	public static Controller getInstance()
 	{
-		// TODO Auto-generated method stub
+		if(controller == null)
+			controller = new Controller();
 		
+		return controller;
+	}
+	
+	/**
+	 * Application entry
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		Controller controller = Controller.getInstance();
+		controller.model.addTableModelListener(controller);
+	}
+	
+	/**
+	 * Notification to view on data changed in the model
+	 * @param TableModelEvent
+	 */
+	@Override
+	public void tableChanged(TableModelEvent e)
+	{
+		//refresh JTable
+		Controller controller = Controller.getInstance();
+		controller.model.fireTableDataChanged();
 	}
 
 }

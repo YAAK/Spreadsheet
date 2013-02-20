@@ -1,7 +1,9 @@
-package com.comp5541.spreadsheet;
+package com.comp5541.spreadsheet.tests;
 
 import static org.junit.Assert.*;
 import org.junit.Test;
+
+import com.comp5541.spreadsheet.model.Spreadsheet;
 
 
 /**
@@ -13,7 +15,7 @@ public class SpreadsheetTest {
 
 	/**
 	 * Test method for
-	 * {@link com.comp5541.spreadsheet.Spreadsheet#Spreadsheet()}.
+	 * {@link com.comp5541.spreadsheet.model.Spreadsheet#Spreadsheet()}.
 	 */
 	// ////// validate that the spreadsheet is created
 
@@ -23,7 +25,7 @@ public class SpreadsheetTest {
 	}
 
 	/**
-	 * Test method for {@link com.comp5541.spreadsheet.Spreadsheet#calculate()}.
+	 * Test method for {@link com.comp5541.spreadsheet.model.Spreadsheet#calculate()}.
 	 */
 	// /// validate that all cell's values for the whole spreadsheet are
 	// properly calculated
@@ -32,10 +34,10 @@ public class SpreadsheetTest {
 	@Test
 	public final void testCalculateRightCellValue1() {
 		spreadsheet.selectCell("A1");
-		spreadsheet.selectedCell.setCellValue("100");
+		spreadsheet.getSelectedCell().setCellValue("100");
 		spreadsheet.calculate();
 		Double expected = 100.0;
-		assertEquals(expected, spreadsheet.selectedCell.nValue);
+		assertEquals(expected, spreadsheet.getSelectedCell().getValue());
 
 	}
 
@@ -43,10 +45,10 @@ public class SpreadsheetTest {
 	@Test
 	public final void testCalculateRightCellValue2() {
 		spreadsheet.selectCell("A1");
-		spreadsheet.selectedCell.setCellValue("=5+1");
+		spreadsheet.getSelectedCell().setCellValue("=5+1");
 		spreadsheet.calculate();
 		Double expected = 6.0;
-		assertEquals(expected, spreadsheet.selectedCell.nValue);
+		assertEquals(expected, spreadsheet.getSelectedCell().getValue());
 
 	}
 
@@ -54,10 +56,10 @@ public class SpreadsheetTest {
 	@Test
 	public final void testCalculateRightCellValue3() {
 		spreadsheet.selectCell("A1");
-		spreadsheet.selectedCell.setCellValue("=B1+2");
+		spreadsheet.getSelectedCell().setCellValue("=B1+2");
 		spreadsheet.calculate();
 		Double expected = 2.0;
-		assertEquals(expected, spreadsheet.selectedCell.nValue);
+		assertEquals(expected, spreadsheet.getSelectedCell().getValue());
 	}
 
 	// ////////check that the cell value can't be a wrong formula
@@ -65,7 +67,7 @@ public class SpreadsheetTest {
 	@Test
 	public final void testCalculateWrongCellFormula() {
 		spreadsheet.selectCell("A1");
-		assertFalse(spreadsheet.selectedCell.setCellValue("=m1+2"));
+		assertFalse(spreadsheet.getSelectedCell().setCellValue("=m1+2"));
 	}
 
 	// ////////check the cell value can't be empty
@@ -73,12 +75,12 @@ public class SpreadsheetTest {
 	@Test
 	public final void testCalculateEmptyCellValue() {
 		spreadsheet.selectCell("D1");
-		assertFalse(spreadsheet.selectedCell.setCellValue("=  "));
+		assertFalse(spreadsheet.getSelectedCell().setCellValue("=  "));
 	}
 
 	/**
 	 * Test method for
-	 * {@link com.comp5541.spreadsheet.Spreadsheet#selectCell(java.lang.String)}
+	 * {@link com.comp5541.spreadsheet.model.Spreadsheet#selectCell(java.lang.String)}
 	 * .
 	 */
 	// ///// validate that the users' input cell name exists

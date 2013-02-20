@@ -1,10 +1,14 @@
 
-package com.comp5541.spreadsheet;
+package com.comp5541.spreadsheet.tests;
 
 import static org.junit.Assert.*;
 //import org.junit.AfterClass;
 //import org.junit.BeforeClass;
 import org.junit.Test;
+
+import com.comp5541.spreadsheet.exceptions.InvalidFormulaException;
+import com.comp5541.spreadsheet.model.Cell;
+import com.comp5541.spreadsheet.model.Spreadsheet;
 
 
 
@@ -91,7 +95,7 @@ public class CellTest {
 		boolean result = cell.computeValue("=1+1");
 		Double expected = (double) 2;
 		assertTrue(result);
-		assertEquals( expected, cell.nValue);	
+		assertEquals( expected, cell.getValue());	
 	}
 	
 	/**
@@ -127,10 +131,17 @@ public class CellTest {
 	{
 		Spreadsheet sheet = new Spreadsheet();
 		sheet.selectCell("B1");
-		Cell cell = sheet.selectedCell;
+		Cell cell = sheet.getSelectedCell();
 		cell.setCellValue("=1+1");
 		
-		String result = cell.getCellValue(sheet.cells);
+		String result = "";
+		try
+		{
+			result = cell.getCellValue(sheet.getCells());
+		}
+		catch (InvalidFormulaException e)
+		{
+		}
 		assertEquals("2.0", result);
 	}	
 		
@@ -143,12 +154,19 @@ public class CellTest {
 	{
 		Spreadsheet sheet = new Spreadsheet();
 		sheet.selectCell("A1");
-		sheet.selectedCell.nValue = (double)1;
+		sheet.getSelectedCell().setValue((double)1);
 		sheet.selectCell("B1");
-		Cell cell = sheet.selectedCell;
+		Cell cell = sheet.getSelectedCell();
 		cell.setCellValue("=A1+1");
 		
-		String result = cell.getCellValue(sheet.cells);
+		String result = "";
+		try
+		{
+			result = cell.getCellValue(sheet.getCells());
+		}
+		catch (InvalidFormulaException e)
+		{
+		}
 		assertEquals("2.0", result);
 	}	
 
@@ -160,10 +178,17 @@ public class CellTest {
 	{
 		Spreadsheet sheet = new Spreadsheet();
 		sheet.selectCell("B1");
-		Cell cell = sheet.selectedCell;
+		Cell cell = sheet.getSelectedCell();
 		cell.setCellValue("=A1+1");
 		
-		String result = cell.getCellValue(sheet.cells);
+		String result = "";
+		try
+		{
+			result = cell.getCellValue(sheet.getCells());
+		}
+		catch (InvalidFormulaException e)
+		{
+		}
 		assertEquals("1.0", result);
 	}	
 
@@ -176,14 +201,21 @@ public class CellTest {
 	{
 		Spreadsheet sheet = new Spreadsheet();
 		sheet.selectCell("A1");
-		sheet.selectedCell.nValue = (double)1;		
+		sheet.getSelectedCell().setValue((double)1);		
 		sheet.selectCell("B1");
-		sheet.selectedCell.sFormula = "=A1+1";
+		sheet.getSelectedCell().setFormula("=A1+1");
 		sheet.selectCell("C1");
-		Cell cell = sheet.selectedCell;
+		Cell cell = sheet.getSelectedCell();
 		cell.setCellValue("=B1+1");
 		
-		String result = cell.getCellValue(sheet.cells);
+		String result = "";
+		try
+		{
+			result = cell.getCellValue(sheet.getCells());
+		}
+		catch (InvalidFormulaException e)
+		{
+		}
 		assertEquals("3.0", result);
 	}	
 
@@ -195,13 +227,21 @@ public class CellTest {
 	{
 		Spreadsheet sheet = new Spreadsheet();
 		sheet.selectCell("A1");
-		sheet.selectedCell.nValue = (double)1;		
+		sheet.getSelectedCell().setValue((double)1);		
 		sheet.selectCell("B1");
-		Cell cell = sheet.selectedCell;
+		Cell cell = sheet.getSelectedCell();
 		assertFalse(cell.setCellValue("=A1+1a"));
 		
-		cell.getCellValue(sheet.cells);
-		String result = cell.getCellValue(sheet.cells);
+		String result = "";
+		try
+		{
+			result = cell.getCellValue(sheet.getCells());
+		}
+		catch (InvalidFormulaException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		 
 		assertEquals("0.0",result);
 	}	
@@ -215,10 +255,17 @@ public class CellTest {
 	{
 		Spreadsheet sheet = new Spreadsheet();
 		sheet.selectCell("B1");
-		Cell cell = sheet.selectedCell;
+		Cell cell = sheet.getSelectedCell();
 		assertFalse(cell.setCellValue("=A200+1"));
 		
-		String result = cell.getCellValue(sheet.cells);
+		String result = "";
+		try
+		{
+			result = cell.getCellValue(sheet.getCells());
+		}
+		catch (InvalidFormulaException e)
+		{
+		}
 		assertEquals("0.0",result);
 	}	
 	

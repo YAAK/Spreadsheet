@@ -5,7 +5,7 @@
  * @date 2013.1.18
  */
 
-package com.comp5541.spreadsheet;
+package com.comp5541.spreadsheet.controller;
 import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -15,8 +15,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import com.comp5541.spreadsheet.model.Cell;
+
 public class FileIO {
-	public static boolean loadFromFile(String filepath,Cell[][] cell) {
+	public static boolean loadFromFile(String filepath,Cell[][] cells) {
 		
 		try {
 			FileInputStream fstream = new FileInputStream(filepath);
@@ -32,9 +34,9 @@ public class FileIO {
 						// assign input formula or nValue
 						if (value[j].substring(0, 1).equals("=")) {
 							// input value starts with "=", means it is a formula
-							cell[i][j].sFormula = value[j];
+							cells[i][j].setFormula(value[j]);
 						} else {
-							cell[i][j].nValue = Double.valueOf(value[j]);
+							cells[i][j].setValue(Double.valueOf(value[j]));
 						}
 					}
 				} else {
@@ -56,7 +58,7 @@ public class FileIO {
 	 * @function save all cells' information into file
 	 * @param cell[][]
 	 */
-	public static boolean saveToFile(String filename,Cell[][] cell) {
+	public static boolean saveToFile(String filename,Cell[][] cells) {
 		if(filename.equals("default")){
 			filename = "SpreadSheetResult.txt";
 		}
@@ -66,7 +68,7 @@ public class FileIO {
 			for (int i = 0; i < 10; i++) {
 				String line = "";
 				for (int j = 0; j < 11; j++) {
-					line = line+cell[i][j].nValue+"          ";
+					line = line+cells[i][j].getValue()+"          ";
 				}
 				doutS.writeBytes(line+ "\r\n");//write a line into file
 			}

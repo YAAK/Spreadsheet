@@ -1,8 +1,8 @@
-package com.comp5541.spreadsheet;
-
-import java.awt.Event;
+package com.comp5541.spreadsheet.model;
 
 import javax.swing.table.AbstractTableModel;
+
+import com.comp5541.spreadsheet.exceptions.InvalidFormulaException;
 
 public class SpreadsheetTableModel extends AbstractTableModel
 {
@@ -76,7 +76,15 @@ public class SpreadsheetTableModel extends AbstractTableModel
 	@Override
 	public Object getValueAt(int nRowIndex, int nColumnIndex)
 	{
-		// TODO Auto-generated method stub
-		return spreadsheet.cells[nRowIndex][nColumnIndex].getCellValue(spreadsheet.cells);
+		String value = "";
+		try
+		{
+			value = spreadsheet.cells[nRowIndex][nColumnIndex].getCellValue(spreadsheet.cells);
+		}
+		catch (InvalidFormulaException e)
+		{
+		}
+		
+		return value;
 	}
 }
