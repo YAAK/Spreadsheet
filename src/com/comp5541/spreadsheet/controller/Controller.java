@@ -9,11 +9,13 @@ package com.comp5541.spreadsheet.controller;
 import java.io.File;
 import java.util.Scanner;
 
+import javax.swing.*;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 
 import com.comp5541.spreadsheet.model.Spreadsheet;
 import com.comp5541.spreadsheet.model.SpreadsheetTableModel;
+import com.comp5541.spreadsheet.view.SpreadsheetGUI;
 
 public class Controller implements TableModelListener{
 	
@@ -203,6 +205,13 @@ public class Controller implements TableModelListener{
 	 * @param args
 	 */
 	public static void main(String[] args) {
+		
+		javax.swing.SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+            	new SpreadsheetGUI().setVisible(true);
+            }
+        });
+		
 		Controller controller = Controller.getInstance();
 		controller.model.addTableModelListener(controller);
 	}
