@@ -24,6 +24,8 @@ public class Controller implements TableModelListener{
 	
 	//model - contains spreadsheet data
 	SpreadsheetTableModel model = new SpreadsheetTableModel();
+	//view
+	SpreadsheetGUI view = new SpreadsheetGUI();
 	
 	/**
 	 * @param args
@@ -206,14 +208,26 @@ public class Controller implements TableModelListener{
 	 */
 	public static void main(String[] args) {
 		
+		/*
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
             public void run() {
             	new SpreadsheetGUI().setVisible(true);
             }
         });
+        */
 		
 		Controller controller = Controller.getInstance();
+		initializeComponents(controller);
+	}
+	
+	/**
+	 * Method to initialize variables
+	 */
+	private static void initializeComponents(Controller controller)
+	{
 		controller.model.addTableModelListener(controller);
+		controller.view.setModel(controller.model);
+		controller.view.setVisible(true);
 	}
 	
 	/**

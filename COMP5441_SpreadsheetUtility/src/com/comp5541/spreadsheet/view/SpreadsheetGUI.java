@@ -1,6 +1,6 @@
 package com.comp5541.spreadsheet.view;
 
-import javax.swing.*;
+import javax.swing.table.TableModel;
 
 public class SpreadsheetGUI extends javax.swing.JFrame{
 	
@@ -13,7 +13,7 @@ public class SpreadsheetGUI extends javax.swing.JFrame{
     private javax.swing.JButton saveButton;
     private javax.swing.JTable spreadsheetTable;
     // End of variables declaration
-	
+
 	/**
      * Creates new form SpreadsheetGUI
      */
@@ -47,6 +47,7 @@ public class SpreadsheetGUI extends javax.swing.JFrame{
 
         jScrollPane1.setPreferredSize(new java.awt.Dimension(375, 352));
 
+        /*
         spreadsheetTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {"1", null, null, null, null, null, null, null, null, null, null, null},
@@ -71,7 +72,7 @@ public class SpreadsheetGUI extends javax.swing.JFrame{
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
-        });
+        });*/
         spreadsheetTable.setColumnSelectionAllowed(true);
         spreadsheetTable.setName(""); // NOI18N
         spreadsheetTable.setPreferredSize(new java.awt.Dimension(800, 320));
@@ -127,4 +128,13 @@ public class SpreadsheetGUI extends javax.swing.JFrame{
 
         pack();
     }// </editor-fold>
+    
+    /**
+     * Method to set the model for the view
+     * @param model TableModel
+     */
+	public void setModel(TableModel model)
+	{
+		spreadsheetTable.setModel(model);
+	}
 }

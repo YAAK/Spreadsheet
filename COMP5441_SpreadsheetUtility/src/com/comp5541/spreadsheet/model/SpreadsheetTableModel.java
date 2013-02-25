@@ -7,6 +7,7 @@ import com.comp5541.spreadsheet.exceptions.InvalidFormulaException;
 public class SpreadsheetTableModel extends AbstractTableModel
 {
 	private Spreadsheet spreadsheet;
+	private String[] columnNames;
 	
 	/**
 	 * Default constructor - instantiate spreadsheet
@@ -14,6 +15,16 @@ public class SpreadsheetTableModel extends AbstractTableModel
 	public SpreadsheetTableModel()
 	{
 		spreadsheet = new Spreadsheet();
+		columnNames = new String[]{"Row", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K"};
+		
+		/*
+		//set row name
+		for(int i = 0; i < spreadsheet.cells.length; i++)
+		{
+			spreadsheet.selectCell(i, 0);
+			spreadsheet.getSelectedCell().setValue((double) (i + 1));
+		}
+		*/
 	}
 	
 	/**
@@ -35,13 +46,22 @@ public class SpreadsheetTableModel extends AbstractTableModel
 	}
 	
 	/**
+	 * Method to return the column name
+	 * @param col Column index
+	 */
+	@Override
+	public String getColumnName(int col)
+	{
+		return columnNames[col];
+	}
+	
+	/**
 	 * Method to get the column count
 	 * @return column count
 	 */
 	@Override
 	public int getColumnCount()
 	{
-		// TODO Auto-generated method stub
 		return spreadsheet.nColumns;
 	}
 
@@ -52,7 +72,6 @@ public class SpreadsheetTableModel extends AbstractTableModel
 	@Override
 	public int getRowCount()
 	{
-		// TODO Auto-generated method stub
 		return spreadsheet.nRows;
 	}
 
@@ -87,4 +106,12 @@ public class SpreadsheetTableModel extends AbstractTableModel
 		
 		return value;
 	}
+	
+	/**
+	 * Method to return whether the cell is editable
+	 */
+	@Override
+	public boolean isCellEditable(int rowIndex, int columnIndex) {
+        return false;
+    }
 }

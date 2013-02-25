@@ -8,17 +8,25 @@ package com.comp5541.spreadsheet.model;
 public class Spreadsheet {
 	Cell cells[][];
 
-	int nColumns;
-	int nRows;
+	int nColumns = 12;
+	int nRows = 11;
 	Cell selectedCell = null;
 
 	
 	public Spreadsheet(){
-		cells = new Cell[10][11];
+		cells = new Cell[10][12];
 		String column[] ="ABCDEFGHIJK".split(""); 
 		for(int i=0;i<10;i++){
-			for(int j=0;j<11;j++){
-				cells[i][j] = new Cell(""+column[j+1]+(i+1));
+			for(int j=0;j<12;j++){
+				
+				//set cell name
+				cells[i][j] = new Cell(""+column[j]+(i+1));
+
+				//set row header
+				if(j == 0)
+				{
+					cells[i][j].setValue((double) i+1);
+				}
 			}
 		}
 
@@ -80,6 +88,16 @@ public class Spreadsheet {
 			e.printStackTrace();
 			return ret;
 		}
+	}
+	
+	/**
+	 * Select cell by row and column index
+	 * @param row Row index
+	 * @param col Column index
+	 */
+	public void selectCell(int row, int col)
+	{
+		setSelectedCell(cells[row][col]);
 	}
 
 	/**
