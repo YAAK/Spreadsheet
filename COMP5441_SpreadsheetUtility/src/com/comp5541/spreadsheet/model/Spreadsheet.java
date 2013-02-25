@@ -36,7 +36,7 @@ public class Spreadsheet {
 	 */
 	public boolean calculate() {
 		for (int i = 0; i < 10; i++) {
-			for (int j = 0; j < 11; j++) {
+			for (int j = 1; j < 12; j++) {
 				cells[i][j].bValid = false;
 				if ((cells[i][j].hasFormula()) && (!cells[i][j].hasValue())) {// if this cell has formula,
 					// parse it
@@ -57,7 +57,7 @@ public class Spreadsheet {
 			}
 		}
 		for (int i = 0; i < 10; i++) {
-			for (int j = 0; j < 11; j++) {
+			for (int j = 1; j < 12; j++) {
 				if(!cells[i][j].bValid){
 					System.out.println("The cell "+cells[i][j].sCellname+"'s formula is invalid");
 				}
@@ -75,7 +75,7 @@ public class Spreadsheet {
 		boolean ret = false;
 		try {
 			loop: for (int i = 0; i < 10; i++) {
-					for (int j = 0; j < 11; j++) {
+					for (int j = 1; j < 12; j++) {
 						if (cells[i][j].sCellname.equals(cellname.trim())) {
 							selectedCell = cells[i][j];
 							ret = true;

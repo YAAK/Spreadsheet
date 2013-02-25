@@ -16,11 +16,16 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 import com.comp5541.spreadsheet.model.Cell;
+import com.comp5541.spreadsheet.model.Spreadsheet;
+import com.comp5541.spreadsheet.model.SpreadsheetTableModel;
 
 public class FileIO {
-	public static boolean loadFromFile(String filepath,Cell[][] cells) {
+	public static boolean loadFromFile(String filepath, SpreadsheetTableModel model) {
 		
 		try {
+			Spreadsheet sheet = new Spreadsheet();
+			Cell[][] cells = sheet.getCells();
+			
 			FileInputStream fstream = new FileInputStream(filepath);
 			// Get the object of DataInputStream
 			DataInputStream in = new DataInputStream(fstream);
@@ -46,6 +51,9 @@ public class FileIO {
 			}
 			// Close the input stream
 			in.close();
+			//load spreadsheet cells into model
+			model.setSpreadsheetCells(cells);
+			
 			return true;
 		} catch (Exception e) {// Catch exception if any
 			System.err.println("Error: " + e.getMessage());
@@ -58,11 +66,13 @@ public class FileIO {
 	 * @function save all cells' information into file
 	 * @param cell[][]
 	 */
-	public static boolean saveToFile(String filename,Cell[][] cells) {
+	public static boolean saveToFile(String filename, SpreadsheetTableModel model) {
 		if(filename.equals("default")){
 			filename = "SpreadSheetResult.txt";
 		}
 		try {
+			Cell[][] cells = model.getSpreadsheetCells();
+			
 			FileOutputStream fstream = new FileOutputStream(filename);
 			DataOutputStream doutS = new DataOutputStream(fstream);
 			for (int i = 0; i < 10; i++) {

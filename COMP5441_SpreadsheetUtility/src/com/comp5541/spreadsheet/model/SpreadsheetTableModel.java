@@ -2,17 +2,19 @@ package com.comp5541.spreadsheet.model;
 
 import javax.swing.table.AbstractTableModel;
 
+import com.comp5541.spreadsheet.controller.Controller;
 import com.comp5541.spreadsheet.exceptions.InvalidFormulaException;
 
 public class SpreadsheetTableModel extends AbstractTableModel
 {
 	private Spreadsheet spreadsheet;
 	private String[] columnNames;
+	private static SpreadsheetTableModel model;
 	
 	/**
 	 * Default constructor - instantiate spreadsheet
 	 */
-	public SpreadsheetTableModel()
+	private SpreadsheetTableModel()
 	{
 		spreadsheet = new Spreadsheet();
 		columnNames = new String[]{"Row", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K"};
@@ -26,6 +28,30 @@ public class SpreadsheetTableModel extends AbstractTableModel
 		}
 		*/
 	}
+
+	/**
+	 * to return the single instance of model - Singleton pattern
+	 * @return The instance of the SpreadsheetTableModel
+	 */
+	public static SpreadsheetTableModel getInstance()
+	{
+		if(model == null)
+			model = new SpreadsheetTableModel();
+		
+		return model;
+	}
+	
+	/**
+	 * Method to return a selected cell
+	 * @param row Row index
+	 * @param col Column index
+	 * @return Cell
+	 */
+	public Cell selectCell(int row, int col)
+	{
+		model.spreadsheet.selectCell(row, col);
+		return model.spreadsheet.getSelectedCell();
+	}
 	
 	/**
 	 * Method to get the spreadsheet cells
@@ -33,7 +59,8 @@ public class SpreadsheetTableModel extends AbstractTableModel
 	 */
 	public Cell[][] getSpreadsheetCells()
 	{
-		return spreadsheet.cells;
+		model.spreadsheet.calculate();
+		return model.spreadsheet.cells;
 	}
 	
 	/**
@@ -42,7 +69,8 @@ public class SpreadsheetTableModel extends AbstractTableModel
 	 */
 	public void setSpreadsheetCells(Cell[][] cells)
 	{
-		spreadsheet.cells = cells;
+		model.spreadsheet.cells = cells;
+		model.spreadsheet.calculate();
 	}
 	
 	/**
@@ -52,7 +80,7 @@ public class SpreadsheetTableModel extends AbstractTableModel
 	@Override
 	public String getColumnName(int col)
 	{
-		return columnNames[col];
+		return model.columnNames[col];
 	}
 	
 	/**
@@ -62,7 +90,7 @@ public class SpreadsheetTableModel extends AbstractTableModel
 	@Override
 	public int getColumnCount()
 	{
-		return spreadsheet.nColumns;
+		return model.spreadsheet.nColumns;
 	}
 
 	/**
@@ -72,7 +100,7 @@ public class SpreadsheetTableModel extends AbstractTableModel
 	@Override
 	public int getRowCount()
 	{
-		return spreadsheet.nRows;
+		return model.spreadsheet.nRows;
 	}
 
 	/**
@@ -83,8 +111,8 @@ public class SpreadsheetTableModel extends AbstractTableModel
 	 */
 	public void setValueAt(Object value, int row, int column)
 	{
-		spreadsheet.selectedCell = spreadsheet.cells[row][column];
-		spreadsheet.selectedCell.setCellValue(value.toString());
+		model.spreadsheet.selectedCell = model.spreadsheet.cells[row][column];
+		model.spreadsheet.selectedCell.setCellValue(value.toString());
 		this.fireTableDataChanged();
 	}
 	
@@ -98,7 +126,7 @@ public class SpreadsheetTableModel extends AbstractTableModel
 		String value = "";
 		try
 		{
-			value = spreadsheet.cells[nRowIndex][nColumnIndex].getCellValue(spreadsheet.cells);
+			value = model.spreadsheet.cells[nRowIndex][nColumnIndex].getCellValue(model.spreadsheet.cells);
 		}
 		catch (InvalidFormulaException e)
 		{
