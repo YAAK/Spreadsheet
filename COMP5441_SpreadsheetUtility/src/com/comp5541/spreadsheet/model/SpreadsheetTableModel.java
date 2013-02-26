@@ -18,15 +18,6 @@ public class SpreadsheetTableModel extends AbstractTableModel
 	{
 		spreadsheet = new Spreadsheet();
 		columnNames = new String[]{"Row", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K"};
-		
-		/*
-		//set row name
-		for(int i = 0; i < spreadsheet.cells.length; i++)
-		{
-			spreadsheet.selectCell(i, 0);
-			spreadsheet.getSelectedCell().setValue((double) (i + 1));
-		}
-		*/
 	}
 
 	/**
@@ -42,7 +33,7 @@ public class SpreadsheetTableModel extends AbstractTableModel
 	}
 	
 	/**
-	 * Method to return a selected cell
+	 * Method to select a cell
 	 * @param row Row index
 	 * @param col Column index
 	 * @return Cell
@@ -54,10 +45,20 @@ public class SpreadsheetTableModel extends AbstractTableModel
 	}
 	
 	/**
+	 * Method to return a selected cell
+	 * @return Cell
+	 */
+	public Cell getSelectedCell()
+	{
+		return model.spreadsheet.getSelectedCell();
+	}
+	
+	/**
 	 * Method to get the spreadsheet cells
 	 * @return Spreadsheet
+	 * @throws InvalidFormulaException 
 	 */
-	public Cell[][] getSpreadsheetCells()
+	public Cell[][] getSpreadsheetCells() throws InvalidFormulaException
 	{
 		model.spreadsheet.calculate();
 		return model.spreadsheet.cells;
@@ -66,10 +67,37 @@ public class SpreadsheetTableModel extends AbstractTableModel
 	/**
 	 * Method to set the spreadsheet cells
 	 * @param cells
+	 * @throws InvalidFormulaException 
 	 */
-	public void setSpreadsheetCells(Cell[][] cells)
+	public void setSpreadsheetCells(Cell[][] cells) throws InvalidFormulaException
 	{
 		model.spreadsheet.cells = cells;
+		model.spreadsheet.calculate();
+	}
+	
+	/**
+	 * To use for testing - throws custom exceptions
+	 * @param rowIndex
+	 * @param columnIndex
+	 * @return Cell value (String)
+	 * @throws InvalidFormulaException
+	 */
+	public String getValue(int rowIndex, int columnIndex) throws InvalidFormulaException
+	{
+		return model.spreadsheet.cells[rowIndex][columnIndex].getCellValue(model.spreadsheet.cells);
+	}
+	
+	/**
+	 * To use for testing - throws custom exceptions
+	 * @param value
+	 * @param row
+	 * @param column
+	 * @throws InvalidFormulaException 
+	 */
+	public void setValue(String value, int row, int column) throws InvalidFormulaException
+	{
+		model.spreadsheet.selectCell(row, column);
+		model.spreadsheet.selectedCell.setCellContent(value);
 		model.spreadsheet.calculate();
 	}
 	
@@ -104,32 +132,40 @@ public class SpreadsheetTableModel extends AbstractTableModel
 	}
 
 	/**
-	 * Method to set the value of a cell and notify JTable of data change
+	 * Overridden method to set the value of a cell and notify JTable of data change
 	 * @param value Cell content
 	 * @param row Row index of the cell
 	 * @param column Column index of the cell
 	 */
+	@Override
 	public void setValueAt(Object value, int row, int column)
 	{
-		model.spreadsheet.selectedCell = model.spreadsheet.cells[row][column];
-		model.spreadsheet.selectedCell.setCellValue(value.toString());
-		this.fireTableDataChanged();
+		try
+		{
+			setValue(value.toString(), row, column);
+			fireTableDataChanged();
+		}
+		catch(Exception ex)
+		{
+			Controller.getInstance().displayMessage(ex.getMessage());
+		}
 	}
 	
 	/**
-	 * Method to get the value of a cell
+	 * Overridden method to get the value of a cell
 	 * @return cell value
 	 */
 	@Override
-	public Object getValueAt(int nRowIndex, int nColumnIndex)
+	public Object getValueAt(int rowIndex, int columnIndex)
 	{
 		String value = "";
 		try
 		{
-			value = model.spreadsheet.cells[nRowIndex][nColumnIndex].getCellValue(model.spreadsheet.cells);
+			value = getValue(rowIndex, columnIndex);
 		}
-		catch (InvalidFormulaException e)
+		catch (Exception e)
 		{
+			Controller.getInstance().displayMessage(e.getMessage());
 		}
 		
 		return value;
@@ -142,4 +178,5 @@ public class SpreadsheetTableModel extends AbstractTableModel
 	public boolean isCellEditable(int rowIndex, int columnIndex) {
         return false;
     }
+	
 }

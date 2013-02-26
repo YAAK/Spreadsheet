@@ -5,6 +5,9 @@
  * @date 2013.1.18
  */
 package com.comp5541.spreadsheet.model;
+
+import com.comp5541.spreadsheet.exceptions.InvalidFormulaException;
+
 public class Spreadsheet {
 	Cell cells[][];
 
@@ -12,7 +15,10 @@ public class Spreadsheet {
 	int nRows = 11;
 	Cell selectedCell = null;
 
-	
+	/**
+	 * Default constructor for Spreadsheet
+	 * Initializes cell array (Cell[10][12]), sets cell name and row/column indices
+	 */
 	public Spreadsheet(){
 		cells = new Cell[10][12];
 		String column[] ="ABCDEFGHIJK".split(""); 
@@ -21,6 +27,8 @@ public class Spreadsheet {
 				
 				//set cell name
 				cells[i][j] = new Cell(""+column[j]+(i+1));
+				cells[i][j].setRow(i);
+				cells[i][j].setColumn(j);
 
 				//set row header
 				if(j == 0)
@@ -33,8 +41,9 @@ public class Spreadsheet {
 	}
 	/**
 	 * this method is used to calculate all the cell's value for the whole spreadsheet
+	 * @throws InvalidFormulaException 
 	 */
-	public boolean calculate() {
+	public boolean calculate() throws InvalidFormulaException {
 		for (int i = 0; i < 10; i++) {
 			for (int j = 1; j < 12; j++) {
 				cells[i][j].bValid = false;

@@ -1,11 +1,19 @@
 package com.comp5541.spreadsheet.view;
 
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+
 import javax.swing.table.TableModel;
 
-public class SpreadsheetGUI extends javax.swing.JFrame{
+import com.comp5541.spreadsheet.controller.Controller;
+import com.comp5541.spreadsheet.model.Cell;
+
+public class SpreadsheetGUI extends javax.swing.JFrame implements MouseListener, KeyListener{
 	
 	// Variables declaration - do not modify
-    private javax.swing.JTextField InputLineTextField;
+    private javax.swing.JTextField inputLineTextField;
     private javax.swing.JLabel inputLineLabel;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton loadButton;
@@ -31,7 +39,7 @@ public class SpreadsheetGUI extends javax.swing.JFrame{
     private void initComponents() {
 
         inputLineLabel = new javax.swing.JLabel();
-        InputLineTextField = new javax.swing.JTextField();
+        inputLineTextField = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         spreadsheetTable = new javax.swing.JTable();
         messageLabel = new javax.swing.JLabel();
@@ -44,6 +52,8 @@ public class SpreadsheetGUI extends javax.swing.JFrame{
         setResizable(false);
 
         inputLineLabel.setText("Cell Content");
+        
+        inputLineTextField.addKeyListener(this);
 
         jScrollPane1.setPreferredSize(new java.awt.Dimension(375, 352));
 
@@ -74,6 +84,7 @@ public class SpreadsheetGUI extends javax.swing.JFrame{
             }
         });*/
         spreadsheetTable.setColumnSelectionAllowed(true);
+        spreadsheetTable.addMouseListener(this);
         spreadsheetTable.setName(""); // NOI18N
         spreadsheetTable.setPreferredSize(new java.awt.Dimension(800, 320));
         spreadsheetTable.setRowHeight(32);
@@ -94,7 +105,7 @@ public class SpreadsheetGUI extends javax.swing.JFrame{
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(inputLineLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(InputLineTextField))
+                        .addComponent(inputLineTextField))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 800, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, 0))
@@ -115,7 +126,7 @@ public class SpreadsheetGUI extends javax.swing.JFrame{
                 .addGap(20, 20, 20)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(inputLineLabel)
-                    .addComponent(InputLineTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(inputLineTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(messageLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -130,11 +141,119 @@ public class SpreadsheetGUI extends javax.swing.JFrame{
     }// </editor-fold>
     
     /**
-     * Method to set the model for the view
+     * Method to set the model for the view - to be used by controller
      * @param model TableModel
      */
 	public void setModel(TableModel model)
 	{
 		spreadsheetTable.setModel(model);
+	}
+
+	/**
+	 * Method to display cell name when a cell has been selected by mouse click
+	 */
+	@Override
+	public void mouseClicked(MouseEvent arg0)
+	{
+		int row = spreadsheetTable.getSelectedRow();
+		int col = spreadsheetTable.getSelectedColumn();
+		if(row != -1 && col > 0)
+		{
+			Controller controller = Controller.getInstance();
+			Cell selectedCell = controller.selectCell(row, col);
+			this.inputLineLabel.setText(selectedCell.getCellname());
+		}
+	}
+
+	/**
+	 * Method to detect when the user presses and releases the "Enter" key on the input line
+	 */
+	@Override
+	public void keyReleased(KeyEvent e)
+	{
+		if(e.getKeyCode() == KeyEvent.VK_ENTER)
+		{
+			if(!inputLineLabel.getText().contains(".txt"))
+			{
+				Controller controller = Controller.getInstance();
+				Cell cell = controller.getselectedCell();
+				
+				//if a cell is selected
+				if(cell != null)
+				{
+					//enter cell content and compute value
+					controller.enterCellContent(cell.getRow(), cell.getColumn(), inputLineTextField.getText());
+					inputLineTextField.setText("");
+				}
+			}
+		}
+	}
+	
+	/**
+	 * Method to display a message to the user
+	 */
+	public void displayMessage(String message)
+	{
+		messageLabel.setText(message);
+		messageLabel.setVisible(true);
+	}
+	/**
+	 * Method required for implementing MouseListener
+	 */
+	@Override
+	public void mouseEntered(MouseEvent arg0)
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+	/**
+	 * Method required for implementing MouseListener
+	 */
+	@Override
+	public void mouseExited(MouseEvent arg0)
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+	/**
+	 * Method required for implementing MouseListener
+	 */
+	@Override
+	public void mousePressed(MouseEvent arg0)
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+	/**
+	 * Method required for implementing MouseListener
+	 */
+	@Override
+	public void mouseReleased(MouseEvent arg0)
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+	/**
+	 * Method required for implementing KeyListener
+	 */
+	@Override
+	public void keyPressed(KeyEvent arg0)
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+	/**
+	 * Method required for implementing KeyListener
+	 */
+	@Override
+	public void keyTyped(KeyEvent arg0)
+	{
+		// TODO Auto-generated method stub
+		
 	}
 }

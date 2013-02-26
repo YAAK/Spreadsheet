@@ -15,100 +15,169 @@ import de.congrace.exp4j.UnknownFunctionException;
 import de.congrace.exp4j.UnparsableExpressionException;
 
 public class Cell {
-	protected String nColumnName;
+	protected String sColumnName;
 	protected String sCellname;
 	protected final Double nDefaultValue = 0.0;
 	protected String sFormula = null;
+	protected int nColumn;
+	protected int nRow;
+	protected Double nValue = null;
+	boolean bValid = false;
+
+
+	/**
+	 * Method to get column name
+	 * @return Column name ("A","B",...)
+	 */
 	public String getColumnName()
 	{
-		return nColumnName;
+		return sColumnName;
 	}
 
-
-
-	public void setColumnName(String nColumnName)
+	/**
+	 * Method to set column name ("A","B",...)
+	 * @param sColumnName name of the columen
+	 */
+	public void setColumnName(String sColumnName)
 	{
-		this.nColumnName = nColumnName;
+		this.sColumnName = sColumnName;
 	}
 
-
-
+	/**
+	 * Method to retrieve the name of a cell
+	 * @return cell name ("A1", "B1", ...)
+	 */
 	public String getCellname()
 	{
 		return sCellname;
 	}
 
-
-
+	/**
+	 * Method to set the name of a cell
+	 * @param sCellname cell name ("A1", "B1", ...)
+	 */
 	public void setCellname(String sCellname)
 	{
 		this.sCellname = sCellname;
 	}
 
-
-
+	/**
+	 * Method to get a cell's formula
+	 * @return cell's formula
+	 */
 	public String getFormula()
 	{
 		return sFormula;
 	}
 
-
-
+	/**
+	 * Method to set a cell's formula
+	 * @param sFormula cell's formula
+	 */
 	public void setFormula(String sFormula)
 	{
 		this.sFormula = sFormula;
 	}
 
-
-
+	/**
+	 * Method to get a cell's value
+	 * @return cell's value (Double)
+	 */
 	public Double getValue()
 	{
 		return nValue;
 	}
 
-
-
+	/**
+	 * Method to set the cell's value (Double)
+	 * @param nValue Cell's value (Double)
+	 */
 	public void setValue(Double nValue)
 	{
 		this.nValue = nValue;
 	}
 
-
-
+	/**
+	 * Method to check cell content validity
+	 * @return True if valid
+	 */
 	public boolean isValid()
 	{
 		return bValid;
 	}
 
-
-
+	/**
+	 * Method to set cell content validity
+	 * @param bValid True if valid
+	 */
 	public void setValid(boolean bValid)
 	{
 		this.bValid = bValid;
 	}
 
-
-
+	/**
+	 * Method to get a cell's default value (0.0)
+	 * @return cell's default value (0.0)
+	 */
 	public Double getDefaultValue()
 	{
 		return nDefaultValue;
 	}
 
-	protected Double nValue = null;
-	boolean bValid = false;
+	/**
+	 * Method to get a cell's column index
+	 * @return cell's column index
+	 */
+	public int getColumn()
+	{
+		return nColumn;
+	}
 
+	/**
+	 * Method to set a cell's column index
+	 * @param nColumn cell's column index
+	 */
+	public void setColumn(int nColumn)
+	{
+		this.nColumn = nColumn;
+	}
+	
+	/**
+	 * Method to get a cell's row index
+	 * @return cell's row index
+	 */
+	public int getRow()
+	{
+		return nRow;
+	}
+
+	/**
+	 * Method to set a cell's row index
+	 * @param nRow cell's row index
+	 */
+	public void setRow(int nRow)
+	{
+		this.nRow = nRow;
+	}
+
+	/**
+	 * Constructor to create a new Cell
+	 * @param cellname Name of the cell ("A1", "B1", ...)
+	 */
 	public Cell(String cellname){ 
 		this.sCellname = cellname.trim();
 		try{
-			this.nColumnName = cellname.trim().substring(0, 1);	
-		}catch(IllegalArgumentException e){
-			e.printStackTrace();
+			this.sColumnName = cellname.trim().substring(0, 1);	
+		}catch(Exception e){
+			throw e;
 		}
 		
 	}
 
-
-	
+	/**
+	 * Method to check if the cell has a formula
+	 * @return True if the cell has a formula
+	 */
 	public boolean hasFormula(){
 		if(this.sFormula !=null){
 			return true;
@@ -117,6 +186,10 @@ public class Cell {
 		}
 	}
 
+	/**
+	 * Method to check if the cell has a value
+	 * @return True if the cell has a value
+	 */
 	public boolean hasValue(){
 		if(this.nValue !=null){
 			return true;
@@ -125,6 +198,10 @@ public class Cell {
 		}
 	}
 
+	/**
+	 * Method to check if the cell has a computed value
+	 * @return True if the cell has a computed value
+	 */
 	public boolean hasComputedValue(){
 		boolean ret=false;
 		if(this.sFormula !=null && this.nValue == null){
@@ -140,9 +217,9 @@ public class Cell {
 	}
 	/**
 	 * @function To parse the formula if the cell has formula, 
-	 * and make it with no other variable than itself
+	 * and translate cell names into their corresponding values
 	 * @param cells
-	 * @return
+	 * @return parsed formula (1+3+3, ...)
 	 */
 	public String parseFormula(Cell cells[][]){
 		//replace variable with computed value
@@ -196,8 +273,7 @@ public class Cell {
 	 * 
 	 * @function: cell's computeValue, cleanFormula doesn't have any variables
 	 */
-	public boolean computeValue(String cleanFormula){
-		boolean ret = false;
+	public void computeValue(String cleanFormula) throws InvalidFormulaException{
 		if(!cleanFormula.trim().equals("")){
 			ExpressionBuilder eb = new ExpressionBuilder(cleanFormula.substring(1));
 			//eb.withVariable("x", 2).withVariable("y", 3);
@@ -205,44 +281,41 @@ public class Cell {
 			try {
 				calc = eb.build();
 				this.nValue=calc.calculate();
-				ret = true;
-				return ret;
 			} catch (UnknownFunctionException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-				return ret;
+				throw new InvalidFormulaException(e.getMessage());
 			} catch (UnparsableExpressionException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-				return ret;
+				throw new InvalidFormulaException(e.getMessage());
 			}
 			
 		}else{
-			return ret;
+			throw new InvalidFormulaException("Empty formula");
 		}
 	}
 
-
-	public static String validateContent(String content){
+	/**
+	 * Method to validate cell content (called before setting the cell content)
+	 * @return "formula" if it is a formula, "value" if it is a primitive value, "error" if there is an error
+	 * @throws InvalidFormulaException thrown if the formula is invalid
+	 */
+	public static String validateContent(String content) throws InvalidFormulaException{
 		String ret ="error";
 		String cont[] = content.trim().split("");
 		if(cont[1].equals("=")&&cont.length>2){//check if it's a formula
 			ret = "formula";
 			for(int i=2;i<cont.length;i++){
 				if(!cont[i].matches( "^[A-K0-9+\\-*/()]$" )){
-					ret = "error";
-					break;//it's not a formla,jump out of for loop
+					throw new InvalidFormulaException("The formula you entered does not match the syntax of a valid formula.");
 				}
 			}
 			if(content.trim().substring(1).matches(".*[A-K].*")){
 				//check for formula with too large cell range
 				if(!content.trim().substring(1).matches(".*[A-k]([1-9][+\\-*/()].*|[1-9]|10[+\\-*/()].*)")){
-					ret = "error";
+					throw new InvalidFormulaException("A cell name in the formula that you entered is out of range.");
 				}
 			}
 		
 		}else if(cont[1].equals("=")&&cont.length<=2){
-			ret = "error";
+			throw new InvalidFormulaException("Did you mean to enter a cell value? If so, do not add '=' at the start.");
 		}else{//check if it's an value
 			ret = "value";
 			for(int i=1;i<cont.length;i++){
@@ -256,16 +329,21 @@ public class Cell {
 		return ret;
 	}
 	
-	
-	public boolean setCellValue(String value){
+	/**
+	 * Method to set cell content
+	 * @param content Cell content
+	 * @return True if valid and set
+	 * @throws InvalidFormulaException thrown if the formula is invalid
+	 */
+	public boolean setCellContent(String content) throws InvalidFormulaException{
 		boolean ret;
-		String result = validateContent(value);
+		String result = validateContent(content);
 		if(result.equals("value")){
-			this.nValue = Double.parseDouble(value);
+			this.nValue = Double.parseDouble(content);
 			this.bValid = true;
 			ret = true;
 		}else if(result.equals("formula")){
-			this.sFormula = value;
+			this.sFormula = content;
 			this.bValid = true;
 			ret = true;
 		}else{

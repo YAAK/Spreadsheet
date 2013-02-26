@@ -11,6 +11,7 @@ import java.io.File;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 
+import com.comp5541.spreadsheet.exceptions.InvalidFormulaException;
 import com.comp5541.spreadsheet.model.Cell;
 import com.comp5541.spreadsheet.model.SpreadsheetTableModel;
 import com.comp5541.spreadsheet.view.SpreadsheetGUI;
@@ -59,7 +60,7 @@ public class Controller implements TableModelListener{
 	 */
 	private static void initializeComponents(Controller controller)
 	{
-		controller.model.addTableModelListener(controller);
+		//controller.model.addTableModelListener(controller);
 		controller.view.setModel(controller.model);
 		controller.view.setVisible(true);
 	}
@@ -72,7 +73,26 @@ public class Controller implements TableModelListener{
 	 */
 	public Cell selectCell(int row, int col)
 	{
-		return controller.model.selectCell(row, col);
+		Cell cell = null;
+		try
+		{
+			cell = controller.model.selectCell(row, col);
+		}
+		catch(Exception ex)
+		{
+			displayMessage(ex.getMessage());
+		}
+		
+		return cell;
+	}
+	
+	/**
+	 * Method to return a selected cell
+	 * @return Cell
+	 */
+	public Cell getselectedCell()
+	{
+		return controller.model.getSelectedCell();
 	}
 	
 	/**
@@ -81,7 +101,7 @@ public class Controller implements TableModelListener{
 	 * @param col Column index
 	 * @param val value
 	 */
-	public void enterCellContent(int row, int col, double value)
+	public void enterCellContent(int row, int col, String value)
 	{
 		try
 		{
@@ -90,6 +110,7 @@ public class Controller implements TableModelListener{
 		catch(Exception ex)
 		{
 			//display message
+			displayMessage(ex.getMessage());
 		}
 	}
 	
@@ -109,11 +130,11 @@ public class Controller implements TableModelListener{
 			}
 			catch(Exception ex)
 			{
-				
+				displayMessage(ex.getMessage());
 			}
 		}else{
 			//display message that file name is incorrect or file does not exist
-			
+			displayMessage("File does not exist. Please re-enter filename and try again.");
 		}
 	}
 	
@@ -129,7 +150,14 @@ public class Controller implements TableModelListener{
 		}
 		else
 		{
-			FileIO.saveToFile(filename, this.model);
+			try
+			{
+				FileIO.saveToFile(filename, this.model);
+			}
+			catch (InvalidFormulaException e)
+			{
+				displayMessage("Invalid formula: " + e.getMessage());
+			}
 		}
 	}
 	
@@ -138,7 +166,7 @@ public class Controller implements TableModelListener{
 	 */
 	public void displayMessage(String message)
 	{
-		
+		view.displayMessage(message);
 	}
 	
 	/**

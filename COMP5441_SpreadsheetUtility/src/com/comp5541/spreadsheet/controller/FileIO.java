@@ -15,11 +15,19 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import com.comp5541.spreadsheet.exceptions.InvalidFormulaException;
 import com.comp5541.spreadsheet.model.Cell;
 import com.comp5541.spreadsheet.model.Spreadsheet;
 import com.comp5541.spreadsheet.model.SpreadsheetTableModel;
 
 public class FileIO {
+	
+	/**
+	 * Method to load spreadsheet from file - data is loaded into the model (SpreadsheetTableModel)
+	 * @param filepath Path of the file to load from
+	 * @param model Model to load cell content into
+	 * @return
+	 */
 	public static boolean loadFromFile(String filepath, SpreadsheetTableModel model) {
 		
 		try {
@@ -65,8 +73,9 @@ public class FileIO {
 	/**
 	 * @function save all cells' information into file
 	 * @param cell[][]
+	 * @throws InvalidFormulaException 
 	 */
-	public static boolean saveToFile(String filename, SpreadsheetTableModel model) {
+	public static boolean saveToFile(String filename, SpreadsheetTableModel model) throws InvalidFormulaException {
 		if(filename.equals("default")){
 			filename = "SpreadSheetResult.txt";
 		}
