@@ -68,7 +68,7 @@ public class Spreadsheet {
 		for (int i = 0; i < 10; i++) {
 			for (int j = 1; j < 12; j++) {
 				if(!cells[i][j].bValid){
-					System.out.println("The cell "+cells[i][j].sCellname+"'s formula is invalid");
+					throw new InvalidFormulaException("The cell "+cells[i][j].sCellname+"'s formula is invalid");
 				}
 			}
 		}

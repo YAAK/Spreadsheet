@@ -154,9 +154,9 @@ public class Controller implements TableModelListener{
 			{
 				FileIO.saveToFile(filename, this.model);
 			}
-			catch (InvalidFormulaException e)
+			catch (Exception e)
 			{
-				displayMessage("Invalid formula: " + e.getMessage());
+				displayMessage(e.getClass().getName() + ": " + e.getMessage());
 			}
 		}
 	}

@@ -8,6 +8,7 @@
 package com.comp5541.spreadsheet.model;
 
 import com.comp5541.spreadsheet.exceptions.InvalidFormulaException;
+import com.comp5541.spreadsheet.exceptions.InvalidValueException;
 
 import de.congrace.exp4j.Calculable;
 import de.congrace.exp4j.ExpressionBuilder;
@@ -270,8 +271,9 @@ public class Cell {
 	 * Method to validate cell content (called before setting the cell content)
 	 * @return "formula" if it is a formula, "value" if it is a primitive value, "error" if there is an error
 	 * @throws InvalidFormulaException thrown if the formula is invalid
+	 * @throws InvalidValueException thrown if the value is invalid
 	 */
-	public static String validateContent(String content) throws InvalidFormulaException{
+	public static String validateContent(String content) throws InvalidFormulaException, InvalidValueException{
 		String ret ="error";
 		String cont[] = content.trim().split("");
 		if(cont[1].equals("=")&&cont.length>2){//check if it's a formula
@@ -294,8 +296,7 @@ public class Cell {
 			ret = "value";
 			for(int i=1;i<cont.length;i++){
 				if(!cont[i].matches( "^[0-9.]$" )){
-					ret = "error";
-					break;
+					throw new InvalidValueException("Invalid value. Did you mean to enter a formula? If so, please add '=' at the start of the formula.");
 				}
 			}
 		}
@@ -308,8 +309,9 @@ public class Cell {
 	 * @param content Cell content
 	 * @return True if valid and set
 	 * @throws InvalidFormulaException thrown if the formula is invalid
+	 * @throws InvalidValueException 
 	 */
-	public boolean setCellContent(String content) throws InvalidFormulaException{
+	public boolean setCellContent(String content) throws InvalidFormulaException, InvalidValueException{
 		boolean ret;
 		String result = validateContent(content);
 		if(result.equals("value")){
@@ -328,11 +330,10 @@ public class Cell {
 
 	/**
 	 * For user to view content of cell value, to be used for usecase 2
-	 * @throws InvalidFormulaException 
-	 * @throws UnparsableExpressionException 
-	 * @throws UnknownFunctionException 
+	 * @throws InvalidFormulaException thrown if formula is invalid
+	 * @throws InvalidValueException thrown if value is invalid
 	 */
-	public String getCellValue(Cell cells[][]) throws InvalidFormulaException{
+	public String getCellValue(Cell cells[][]) throws InvalidFormulaException, InvalidValueException{
 		String ret = "";
 		if(this.sFormula != null) {// if this cell has formula,
 			// first validate it

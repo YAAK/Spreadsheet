@@ -92,8 +92,10 @@ public class SpreadsheetGUI extends javax.swing.JFrame implements MouseListener,
         spreadsheetTable.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 
         saveButton.setText("Save");
+        saveButton.addMouseListener(this);
 
         loadButton.setText("Load");
+        loadButton.addMouseListener(this);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -150,18 +152,38 @@ public class SpreadsheetGUI extends javax.swing.JFrame implements MouseListener,
 	}
 
 	/**
-	 * Method to display cell name when a cell has been selected by mouse click
+	 * Method to 
+	 * - display cell name when a cell has been selected by mouse click
+	 * - call controller to save a file when save button is clicked
+	 * - call controller to load a file when load button is clicked
 	 */
 	@Override
-	public void mouseClicked(MouseEvent arg0)
+	public void mouseClicked(MouseEvent e)
 	{
-		int row = spreadsheetTable.getSelectedRow();
-		int col = spreadsheetTable.getSelectedColumn();
-		if(row != -1 && col > 0)
+		Controller controller = Controller.getInstance();
+		
+		//to save a file
+		if(e.getSource().getClass() == javax.swing.JButton.class && (javax.swing.JButton)e.getSource() == this.saveButton)
 		{
-			Controller controller = Controller.getInstance();
-			Cell selectedCell = controller.selectCell(row, col);
-			this.inputLineLabel.setText(selectedCell.getCellname());
+			controller.saveSpreadsheetToFile(this.inputLineTextField.getText().trim());
+		}
+		
+		//to load a file
+		else if(e.getSource().getClass() == javax.swing.JButton.class && (javax.swing.JButton)e.getSource() == this.loadButton)
+		{
+			controller.loadSpreadsheetFromFile(this.inputLineTextField.getText().trim());
+		}
+		
+		//to show selected cell name before the input line
+		else
+		{
+			int row = spreadsheetTable.getSelectedRow();
+			int col = spreadsheetTable.getSelectedColumn();
+			if(row != -1 && col > 0)
+			{
+				Cell selectedCell = controller.selectCell(row, col);
+				this.inputLineLabel.setText(selectedCell.getCellname());
+			}
 		}
 	}
 
@@ -195,7 +217,6 @@ public class SpreadsheetGUI extends javax.swing.JFrame implements MouseListener,
 	public void displayMessage(String message)
 	{
 		messageLabel.setText(message);
-		messageLabel.setVisible(true);
 	}
 	/**
 	 * Method required for implementing MouseListener

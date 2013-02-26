@@ -4,6 +4,7 @@ import javax.swing.table.AbstractTableModel;
 
 import com.comp5541.spreadsheet.controller.Controller;
 import com.comp5541.spreadsheet.exceptions.InvalidFormulaException;
+import com.comp5541.spreadsheet.exceptions.InvalidValueException;
 
 public class SpreadsheetTableModel extends AbstractTableModel
 {
@@ -36,7 +37,7 @@ public class SpreadsheetTableModel extends AbstractTableModel
 	 * Method to select a cell
 	 * @param row Row index
 	 * @param col Column index
-	 * @return Cell
+	 * @return selected cell
 	 */
 	public Cell selectCell(int row, int col)
 	{
@@ -46,7 +47,7 @@ public class SpreadsheetTableModel extends AbstractTableModel
 	
 	/**
 	 * Method to return a selected cell
-	 * @return Cell
+	 * @return selected cell
 	 */
 	public Cell getSelectedCell()
 	{
@@ -56,7 +57,7 @@ public class SpreadsheetTableModel extends AbstractTableModel
 	/**
 	 * Method to get the spreadsheet cells
 	 * @return Spreadsheet
-	 * @throws InvalidFormulaException 
+	 * @throws InvalidFormulaException thrown from calculate() if formula is invalid
 	 */
 	public Cell[][] getSpreadsheetCells() throws InvalidFormulaException
 	{
@@ -67,34 +68,37 @@ public class SpreadsheetTableModel extends AbstractTableModel
 	/**
 	 * Method to set the spreadsheet cells
 	 * @param cells
-	 * @throws InvalidFormulaException 
+	 * @throws InvalidFormulaException thrown from calculate() if formula is invalid
 	 */
 	public void setSpreadsheetCells(Cell[][] cells) throws InvalidFormulaException
 	{
 		model.spreadsheet.cells = cells;
 		model.spreadsheet.calculate();
+		fireTableDataChanged();
 	}
 	
 	/**
 	 * To use for testing - throws custom exceptions
-	 * @param rowIndex
-	 * @param columnIndex
+	 * @param row row index
+	 * @param column column index
 	 * @return Cell value (String)
-	 * @throws InvalidFormulaException
+	 * @throws InvalidFormulaException thrown from getCellValue() if formula is invalid
+	 * @throws InvalidValueException thrown from getCellValue() if value is invalid
 	 */
-	public String getValue(int rowIndex, int columnIndex) throws InvalidFormulaException
+	public String getValue(int row, int column) throws InvalidFormulaException, InvalidValueException
 	{
-		return model.spreadsheet.cells[rowIndex][columnIndex].getCellValue(model.spreadsheet.cells);
+		return model.spreadsheet.cells[row][column].getCellValue(model.spreadsheet.cells);
 	}
 	
 	/**
 	 * To use for testing - throws custom exceptions
-	 * @param value
-	 * @param row
-	 * @param column
-	 * @throws InvalidFormulaException 
+	 * @param value Value to be set
+	 * @param row row index
+	 * @param column column index
+	 * @throws InvalidFormulaException thrown from setCellContent()/calculate() if formula is invalid
+	 * @throws InvalidValueException thrown from setCellContent() if value is invalid
 	 */
-	public void setValue(String value, int row, int column) throws InvalidFormulaException
+	public void setValue(String value, int row, int column) throws InvalidFormulaException, InvalidValueException
 	{
 		model.spreadsheet.selectCell(row, column);
 		model.spreadsheet.selectedCell.setCellContent(value);
