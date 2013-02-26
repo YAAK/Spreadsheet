@@ -15,7 +15,6 @@ import de.congrace.exp4j.UnknownFunctionException;
 import de.congrace.exp4j.UnparsableExpressionException;
 
 public class Cell {
-	protected String sColumnName;
 	protected String sCellname;
 	protected final Double nDefaultValue = 0.0;
 	protected String sFormula = null;
@@ -23,25 +22,6 @@ public class Cell {
 	protected int nRow;
 	protected Double nValue = null;
 	boolean bValid = false;
-
-
-	/**
-	 * Method to get column name
-	 * @return Column name ("A","B",...)
-	 */
-	public String getColumnName()
-	{
-		return sColumnName;
-	}
-
-	/**
-	 * Method to set column name ("A","B",...)
-	 * @param sColumnName name of the columen
-	 */
-	public void setColumnName(String sColumnName)
-	{
-		this.sColumnName = sColumnName;
-	}
 
 	/**
 	 * Method to retrieve the name of a cell
@@ -166,12 +146,6 @@ public class Cell {
 	 */
 	public Cell(String cellname){ 
 		this.sCellname = cellname.trim();
-		try{
-			this.sColumnName = cellname.trim().substring(0, 1);	
-		}catch(Exception e){
-			throw e;
-		}
-		
 	}
 
 	/**
