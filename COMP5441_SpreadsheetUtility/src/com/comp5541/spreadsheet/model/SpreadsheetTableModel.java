@@ -18,7 +18,7 @@ public class SpreadsheetTableModel extends AbstractTableModel
 	private SpreadsheetTableModel()
 	{
 		spreadsheet = new Spreadsheet();
-		columnNames = new String[]{"Row", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K"};
+		columnNames = new String[]{"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K"};
 	}
 
 	/**

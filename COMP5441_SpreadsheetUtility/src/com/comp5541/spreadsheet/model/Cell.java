@@ -192,7 +192,7 @@ public class Cell {
 	}
 	/**
 	 * @function To parse the formula if the cell has formula, 
-	 * and translate cell names into their corresponding values
+	 * and translate cell names into their corresponding values except the cell itself
 	 * @param cells
 	 * @return parsed formula (1+3+3, ...)
 	 */
@@ -205,7 +205,7 @@ public class Cell {
 		loop:
 			while(flag){
 				for(int i=0;i<10;i++){		
-					for(int j=1;j<12;j++){ 			    //get each cell's name,and replace them with primitive value				   
+					for(int j=0;j<11;j++){ 			    //get each cell's name,and replace them with primitive value				   
 						if(str.contains(selfname)){		//get the name of cell according to the formula's variable
 							this.bValid = false;
 							break loop;

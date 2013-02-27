@@ -11,8 +11,8 @@ import com.comp5541.spreadsheet.exceptions.InvalidFormulaException;
 public class Spreadsheet {
 	Cell cells[][];
 
-	int nColumns = 12;
-	int nRows = 11;
+	int nColumns = 11;
+	int nRows = 10;
 	Cell selectedCell = null;
 
 	/**
@@ -20,21 +20,15 @@ public class Spreadsheet {
 	 * Initializes cell array (Cell[10][12]), sets cell name and row/column indices
 	 */
 	public Spreadsheet(){
-		cells = new Cell[10][12];
+		cells = new Cell[10][11];
 		String column[] ="ABCDEFGHIJK".split(""); 
 		for(int i=0;i<10;i++){
-			for(int j=0;j<12;j++){
+			for(int j=0;j<11;j++){
 				
 				//set cell name
-				cells[i][j] = new Cell(""+column[j]+(i+1));
+				cells[i][j] = new Cell(""+column[j+1]+(i+1));
 				cells[i][j].setRow(i);
 				cells[i][j].setColumn(j);
-
-				//set row header
-				if(j == 0)
-				{
-					cells[i][j].setValue((double) i+1);
-				}
 			}
 		}
 
@@ -45,7 +39,7 @@ public class Spreadsheet {
 	 */
 	public boolean calculate() throws InvalidFormulaException {
 		for (int i = 0; i < 10; i++) {
-			for (int j = 1; j < 12; j++) {
+			for (int j = 0; j < 11; j++) {
 				cells[i][j].bValid = false;
 				if ((cells[i][j].hasFormula()) && (!cells[i][j].hasValue())) {// if this cell has formula,
 					// parse it
@@ -66,7 +60,7 @@ public class Spreadsheet {
 			}
 		}
 		for (int i = 0; i < 10; i++) {
-			for (int j = 1; j < 12; j++) {
+			for (int j = 0; j < 11; j++) {
 				if(!cells[i][j].bValid){
 					throw new InvalidFormulaException("The cell "+cells[i][j].sCellname+"'s formula is invalid");
 				}
@@ -84,7 +78,7 @@ public class Spreadsheet {
 		boolean ret = false;
 		try {
 			loop: for (int i = 0; i < 10; i++) {
-					for (int j = 1; j < 12; j++) {
+					for (int j = 0; j < 11; j++) {
 						if (cells[i][j].sCellname.equals(cellname.trim())) {
 							selectedCell = cells[i][j];
 							ret = true;

@@ -1,10 +1,16 @@
 package com.comp5541.spreadsheet.view;
 
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+import javax.swing.BorderFactory;
+import javax.swing.JTable;
+import javax.swing.JViewport;
+import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
 
 import com.comp5541.spreadsheet.controller.Controller;
@@ -15,11 +21,12 @@ public class SpreadsheetGUI extends javax.swing.JFrame implements MouseListener,
 	// Variables declaration - do not modify
     private javax.swing.JTextField inputLineTextField;
     private javax.swing.JLabel inputLineLabel;
-    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane;
     private javax.swing.JButton loadButton;
     private javax.swing.JLabel messageLabel;
     private javax.swing.JButton saveButton;
     private javax.swing.JTable spreadsheetTable;
+    private javax.swing.JViewport viewportRowHeader;
     // End of variables declaration
 
 	/**
@@ -40,11 +47,12 @@ public class SpreadsheetGUI extends javax.swing.JFrame implements MouseListener,
 
         inputLineLabel = new javax.swing.JLabel();
         inputLineTextField = new javax.swing.JTextField();
-        jScrollPane1 = new javax.swing.JScrollPane();
+        jScrollPane = new javax.swing.JScrollPane();
         spreadsheetTable = new javax.swing.JTable();
         messageLabel = new javax.swing.JLabel();
         saveButton = new javax.swing.JButton();
         loadButton = new javax.swing.JButton();
+        viewportRowHeader = new JViewport();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Spreadsheet");
@@ -55,40 +63,17 @@ public class SpreadsheetGUI extends javax.swing.JFrame implements MouseListener,
         
         inputLineTextField.addKeyListener(this);
 
-        jScrollPane1.setPreferredSize(new java.awt.Dimension(375, 352));
+        jScrollPane.setPreferredSize(new java.awt.Dimension(375, 352));
 
-        /*
-        spreadsheetTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {"1", null, null, null, null, null, null, null, null, null, null, null},
-                {"2", null, null, null, null, null, null, null, null, null, null, null},
-                {"3", null, null, null, null, null, null, null, null, null, null, null},
-                {"4", null, null, null, null, null, null, null, null, null, null, null},
-                {"5", null, null, null, null, null, null, null, null, null, null, null},
-                {"6", null, null, null, null, null, null, null, null, null, null, null},
-                {"7", null, null, null, null, null, null, null, null, null, null, null},
-                {"8", null, null, null, null, null, null, null, null, null, null, null},
-                {"9", null, null, null, null, null, null, null, null, null, null, null},
-                {"10", null, null, null, null, null, null, null, null, null, null, null}
-            },
-            new String [] {
-                "Row", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, false, false, false, false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });*/
         spreadsheetTable.setColumnSelectionAllowed(true);
         spreadsheetTable.addMouseListener(this);
         spreadsheetTable.setName(""); // NOI18N
         spreadsheetTable.setPreferredSize(new java.awt.Dimension(800, 320));
         spreadsheetTable.setRowHeight(32);
-        jScrollPane1.setViewportView(spreadsheetTable);
+        jScrollPane.setViewportView(spreadsheetTable);
+        viewportRowHeader.setView(getRowHeader());
+        viewportRowHeader.setPreferredSize(new Dimension(50, spreadsheetTable.getPreferredSize().height));
+        jScrollPane.setRowHeader(viewportRowHeader);
         spreadsheetTable.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 
         saveButton.setText("Save");
@@ -109,7 +94,7 @@ public class SpreadsheetGUI extends javax.swing.JFrame implements MouseListener,
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(inputLineTextField))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 800, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 800, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, 0))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(messageLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -135,12 +120,51 @@ public class SpreadsheetGUI extends javax.swing.JFrame implements MouseListener,
                     .addComponent(saveButton, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
                     .addComponent(loadButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 352, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 352, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
         pack();
     }// </editor-fold>
+    
+    /**
+     * Create row header for spreadsheet 
+     */
+    public JTable getRowHeader()
+    {
+    	//row header TableModel
+    	TableModel rowHeaderModel = new AbstractTableModel() {
+    		public int getColumnCount() 
+    		{ 
+    			return 1; 
+    		}
+    		public int getRowCount() 
+    		{ 
+    			return 10;
+    		}
+    		public String getColumnName(int col) 
+    		{ 
+    			return "Row"; 
+    		}
+    		public Object getValueAt(int row, int col) 
+    		{ 
+    			return (row+1); 
+    		}
+    		public boolean isCellEditable(int row, int col)
+    		{
+    			return false;
+    		}
+    	};
+         
+         //format row header table
+         JTable rowHeader = new JTable(rowHeaderModel);
+         rowHeader.setRowHeight(spreadsheetTable.getRowHeight());
+         rowHeader.setBackground(spreadsheetTable.getTableHeader().getBackground());
+         rowHeader.setBorder(spreadsheetTable.getTableHeader().getBorder());
+         rowHeader.setColumnSelectionAllowed(false);
+         
+         return rowHeader;
+    }
     
     /**
      * Method to set the model for the view - to be used by controller
@@ -179,7 +203,7 @@ public class SpreadsheetGUI extends javax.swing.JFrame implements MouseListener,
 		{
 			int row = spreadsheetTable.getSelectedRow();
 			int col = spreadsheetTable.getSelectedColumn();
-			if(row != -1 && col > 0)
+			if(row != -1 && col != -1)
 			{
 				Cell selectedCell = controller.selectCell(row, col);
 				this.inputLineLabel.setText(selectedCell.getCellname());
