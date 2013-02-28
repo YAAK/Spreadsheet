@@ -127,6 +127,7 @@ public class Controller implements TableModelListener{
 			{
 				FileIO.parseFile(filename);
 				FileIO.loadFromFile(filename, this.model);
+				displayMessage("File " + filename + " loaded");
 			}
 			catch(Exception ex)
 			{
@@ -153,6 +154,7 @@ public class Controller implements TableModelListener{
 			try
 			{
 				FileIO.saveToFile(filename, this.model);
+				displayMessage("File " + filename + " saved.");
 			}
 			catch (Exception e)
 			{
