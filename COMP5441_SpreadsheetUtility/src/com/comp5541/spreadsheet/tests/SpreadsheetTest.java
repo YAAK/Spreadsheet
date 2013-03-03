@@ -1,130 +1,114 @@
 package com.comp5541.spreadsheet.tests;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 import org.junit.Test;
 
+import com.comp5541.spreadsheet.exceptions.InvalidFormulaException;
+import com.comp5541.spreadsheet.exceptions.InvalidValueException;
 import com.comp5541.spreadsheet.model.Spreadsheet;
 
+public class SpreadsheetTest{
+		Spreadsheet spreadsheet = new Spreadsheet();
 
-/**
- * @author Lilia
- * 
- */
-public class SpreadsheetTest {
-	Spreadsheet spreadsheet = new Spreadsheet();
-
-	/**
-	 * Test method for
-	 * {@link com.comp5541.spreadsheet.model.Spreadsheet#Spreadsheet()}.
-	 */
-	// ////// validate that the spreadsheet is created
-
+      /** 
+		*Checking the valid cells
+		* Testing valid cells
+		*/
 	@Test
-	public final void testSpreadsheetIsCreated() {
-		assertNotNull(spreadsheet);
+	public final void testCheckingvalidCell1() {
+		Spreadsheet spreadsheet = new Spreadsheet();
+		assertTrue(spreadsheet.selectCell("B1"));
 	}
-
-	/**
-	 * Test method for {@link com.comp5541.spreadsheet.model.Spreadsheet#calculate()}.
-	 */
-	// /// validate that all cell's values for the whole spreadsheet are
-	// properly calculated
-
-	// ////////check the cell value when it's value is a double
+	
+	/**Checking the invalid cell
+	 *Testing invalid cells
+	 **/
+	
 	@Test
-	public final void testCalculateRightCellValue1() {
+	public final void testCheckinginvalidlcelll1() {
+		assertFalse(spreadsheet.selectCell("L1"));
+	}
+	
+	//test for calculate
+	/**
+	 * testing wrong formula
+	 * @throws InvalidFormulaException
+	 * @throws InvalidValueException
+	 */
+	@Test(expected = InvalidFormulaException.class)
+	public final void testWrongCellFormula() throws InvalidFormulaException, InvalidValueException {
 		spreadsheet.selectCell("A1");
-		spreadsheet.getSelectedCell().setCellValue("100");
+	    spreadsheet.getSelectedCell().setCellContent("=l1+2");
+	}
+	
+	/**
+	 * Testing correct formula
+	 * @throws InvalidFormulaException
+	 * @throws InvalidValueException
+	 */
+	@Test
+	public final void testCorrectCellFormula() throws InvalidFormulaException, InvalidValueException {
+		spreadsheet.selectCell("B1");
+		assertTrue(spreadsheet.getSelectedCell().setCellContent("=C1+2"));
+	}
+	
+	/**
+	 * Testing Empty cell value
+	 * @throws InvalidFormulaException
+	 * @throws InvalidValueException
+	 */
+	@Test(expected = InvalidFormulaException.class )
+	public final void testCalculatewithEmptyCellValue() throws InvalidFormulaException, InvalidValueException {
+		spreadsheet.selectCell("F2");
+		spreadsheet.getSelectedCell().setCellContent("=  ");
+	}
+	// Calculating with value
+	/**
+	 * Testing Right values
+	 * @throws InvalidFormulaException
+	 * @throws InvalidValueException
+	 */
+	@Test
+	public final void testCalculateRightCellValue() throws InvalidFormulaException, InvalidValueException {
+		spreadsheet.selectCell("A1");
+		spreadsheet.getSelectedCell().setCellContent("100");
 		spreadsheet.calculate();
 		Double expected = 100.0;
 		assertEquals(expected, spreadsheet.getSelectedCell().getValue());
-
 	}
-
-	// ////////check the cell value when it has a right formula
+	
+	// Calculating with the values
+	/**
+	 * Testing the cell which does calculation with a value
+	 * @throws InvalidFormulaException
+	 * @throws InvalidValueException
+	 */
 	@Test
-	public final void testCalculateRightCellValue2() {
+	public final void testCalculatewithcellvalues() throws InvalidFormulaException, InvalidValueException {
 		spreadsheet.selectCell("A1");
-		spreadsheet.getSelectedCell().setCellValue("=5+1");
+		spreadsheet.getSelectedCell().setCellContent("=8+1");
 		spreadsheet.calculate();
-		Double expected = 6.0;
+		Double expected = 9.0;
 		assertEquals(expected, spreadsheet.getSelectedCell().getValue());
-
-	}
-
-	// //////// check the cell value when it has a right double formula
+		}
+	
+	// Calculating with a formula
+	/**
+	 * Testing with a formula
+	 * @throws InvalidFormulaException
+	 * @throws InvalidValueException
+	 */
 	@Test
-	public final void testCalculateRightCellValue3() {
+	public final void testCalculatewithvalueandformula() throws InvalidFormulaException, InvalidValueException {
 		spreadsheet.selectCell("A1");
-		spreadsheet.getSelectedCell().setCellValue("=B1+2");
+		spreadsheet.getSelectedCell().setCellContent("=B1+2");
 		spreadsheet.calculate();
 		Double expected = 2.0;
 		assertEquals(expected, spreadsheet.getSelectedCell().getValue());
 	}
-
-	// ////////check that the cell value can't be a wrong formula
-
-	@Test
-	public final void testCalculateWrongCellFormula() {
-		spreadsheet.selectCell("A1");
-		assertFalse(spreadsheet.getSelectedCell().setCellValue("=m1+2"));
-	}
-
-	// ////////check the cell value can't be empty
-
-	@Test
-	public final void testCalculateEmptyCellValue() {
-		spreadsheet.selectCell("D1");
-		assertFalse(spreadsheet.getSelectedCell().setCellValue("=  "));
-	}
-
-	/**
-	 * Test method for
-	 * {@link com.comp5541.spreadsheet.model.Spreadsheet#selectCell(java.lang.String)}
-	 * .
-	 */
-	// ///// validate that the users' input cell name exists
-
-	// ////////// check the elements located at boundaries
-	@Test
-	public final void testSellectRightCell1() {
-		assertTrue(spreadsheet.selectCell("A1"));
-	}
-
-	@Test
-	public final void testSellectRightCell2() {
-		assertTrue(spreadsheet.selectCell("K1"));
-	}
-
-	@Test
-	public final void testSellectRightCell3() {
-		assertTrue(spreadsheet.selectCell("K10"));
-	}
-
-	@Test
-	public final void testSellectRightCell4() {
-		assertTrue(spreadsheet.selectCell("A10"));
-	}
-
-	// check that the user can't input a wrong cell name
-	@Test
-	public final void testSellectWrongCell1() {
-		assertFalse(spreadsheet.selectCell("A"));
-	}
-
-	@Test
-	public final void testSellectWrongCell2() {
-		assertFalse(spreadsheet.selectCell("K11"));
-	}
-
-	@Test
-	public final void testSellectWrongCell3() {
-		assertFalse(spreadsheet.selectCell(" K11"));
-	}
-
-	@Test
-	public final void testSellectWrongCell4() {
-		assertFalse(spreadsheet.selectCell("100"));
-	}
-
-}
+	
+}	
+	

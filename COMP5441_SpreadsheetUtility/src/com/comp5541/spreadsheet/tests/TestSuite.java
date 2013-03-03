@@ -7,8 +7,10 @@ import org.junit.runners.*;
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
         CellTest.class,
+        ControllerTest.class,
         FileIOTest.class,
-        SpreadsheetTest.class
+        SpreadsheetTest.class,
+        SpreadsheetTableModelTest.class
 })
 public class TestSuite
 {
