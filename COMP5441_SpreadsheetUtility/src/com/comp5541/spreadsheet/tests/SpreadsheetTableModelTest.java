@@ -9,6 +9,11 @@ import com.comp5541.spreadsheet.exceptions.InvalidValueException;
 import com.comp5541.spreadsheet.model.Spreadsheet;
 import com.comp5541.spreadsheet.model.SpreadsheetTableModel;
 
+/**
+ * Tests for SpreadsheetTableModel class
+ * @author Yi
+ *
+ */
 public class SpreadsheetTableModelTest {
 	
 	

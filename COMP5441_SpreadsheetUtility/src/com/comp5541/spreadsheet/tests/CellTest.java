@@ -2,8 +2,6 @@
 package com.comp5541.spreadsheet.tests;
 
 import static org.junit.Assert.*;
-//import org.junit.AfterClass;
-//import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.comp5541.spreadsheet.exceptions.InvalidFormulaException;
@@ -12,7 +10,11 @@ import com.comp5541.spreadsheet.model.Cell;
 import com.comp5541.spreadsheet.model.Spreadsheet;
 import com.comp5541.spreadsheet.model.SpreadsheetTableModel;
 
-
+/**
+ * Tests for cell class
+ * @author Nick
+ *
+ */
 public class CellTest {
 	
 	//------------hasFormula Tests

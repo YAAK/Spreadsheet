@@ -10,6 +10,11 @@ import com.comp5541.spreadsheet.exceptions.InvalidFormulaException;
 import com.comp5541.spreadsheet.exceptions.InvalidValueException;
 import com.comp5541.spreadsheet.model.Spreadsheet;
 
+/**
+ * Tests for Spreadsheet class
+ * @author Santosh
+ *
+ */
 public class SpreadsheetTest{
 		Spreadsheet spreadsheet = new Spreadsheet();
 

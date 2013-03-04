@@ -22,13 +22,17 @@ import com.comp5541.spreadsheet.model.Cell;
 import com.comp5541.spreadsheet.model.Spreadsheet;
 import com.comp5541.spreadsheet.model.SpreadsheetTableModel;
 
+/**
+ * FileIO class - for saving a spreadsheet to file or loading a spreadsheet from file
+ * @author Nick
+ *
+ */
 public class FileIO {
 	
 	/**
 	 * Method to load spreadsheet from file - data is loaded into the model (SpreadsheetTableModel)
 	 * @param filepath Path of the file to load from
 	 * @param model Model to load cell content into
-	 * @return
 	 * @throws IOException 
 	 * @throws NumberFormatException 
 	 * @throws InvalidFormulaException 
@@ -73,10 +77,11 @@ public class FileIO {
 	}
 	
 	/**
-	 * @function save all cells' information into file
-	 * @param cell[][]
-	 * @throws InvalidFormulaException 
-	 * @throws IOException 
+	 * Method to save spreadsheet to text file
+	 * @param filename Name of the file to save to
+	 * @param model Model containing spreadsheet data
+	 * @throws InvalidFormulaException Thrown if an invalid formula is found (caught/handled in controller)
+	 * @throws IOException Thrown if there is an IO exception (caught/handled in controller)
 	 */
 	public static void saveToFile(String filename, SpreadsheetTableModel model) throws InvalidFormulaException, IOException {
 		if(filename.equals("")){
@@ -98,10 +103,11 @@ public class FileIO {
 	}
 	
 	/**
-	 * parse file, this function to be used for use case 3
-	 * @throws InvalidFormulaException 
-	 * @throws IOException 
-	 * @throws InvalidValueException 
+	 * Method to parse a file before loading it
+	 * @param filename Name of the file to parse
+	 * @throws IOException Thrown if there is an IO exception  (caught/handled in controller)
+	 * @throws InvalidFormulaException Thrown if an invalid formula is found (caught/handled in controller)
+	 * @throws InvalidValueException Thrown if an invalid value is found (caught/handled in controller)
 	 */
 	public static void parseFile(String filename) throws IOException, InvalidFormulaException, InvalidValueException{
 

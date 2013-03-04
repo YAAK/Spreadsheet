@@ -16,7 +16,12 @@ import com.comp5541.spreadsheet.model.Cell;
 import com.comp5541.spreadsheet.model.SpreadsheetTableModel;
 import com.comp5541.spreadsheet.view.SpreadsheetGUI;
 
-public class Controller implements TableModelListener{
+/**
+ * Controller class - used for communication and to perform actions between the view and the model
+ * @author Amy
+ *
+ */
+public class Controller{
 	
 	//controller
 	private static Controller controller = new Controller();
@@ -56,11 +61,10 @@ public class Controller implements TableModelListener{
 	}
 	
 	/**
-	 * Method to initialize variables
+	 * Method to initialize the view and set the default model
 	 */
 	private static void initializeComponents(Controller controller)
 	{
-		//controller.model.addTableModelListener(controller);
 		controller.view.setModel(controller.model);
 		controller.view.setVisible(true);
 	}
@@ -125,6 +129,7 @@ public class Controller implements TableModelListener{
 		if(file.exists()){
 			try
 			{
+				//if file exists, parse file and load it
 				FileIO.parseFile(filename);
 				FileIO.loadFromFile(filename, this.model);
 				displayMessage("File " + filename + " loaded");
@@ -148,11 +153,13 @@ public class Controller implements TableModelListener{
 		File file = new File(filename);
 		if(file.exists()){
 			//display message that file already exists
+			displayMessage("File already exists. Please enter a new file name.");
 		}
 		else
 		{
 			try
 			{
+				//save file
 				FileIO.saveToFile(filename, this.model);
 				displayMessage("File " + filename + " saved.");
 			}
@@ -169,18 +176,6 @@ public class Controller implements TableModelListener{
 	public void displayMessage(String message)
 	{
 		view.displayMessage(message);
-	}
-	
-	/**
-	 * Notification to view on data changed in the model
-	 * @param TableModelEvent
-	 */
-	@Override
-	public void tableChanged(TableModelEvent e)
-	{
-		//refresh JTable
-		Controller controller = Controller.getInstance();
-		controller.model.fireTableDataChanged();
 	}
 
 }

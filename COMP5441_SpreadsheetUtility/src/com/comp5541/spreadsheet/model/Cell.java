@@ -1,10 +1,3 @@
-
-/**
- * @function: Cell 
- * @author Huantao Liu 5998662, Hojabr Sattari 6435807, Santhosh Srinivasan 6583059 ,Yi Wang 9676449
- * @Modified by:
- * @date 2013.1.18
- */
 package com.comp5541.spreadsheet.model;
 
 import com.comp5541.spreadsheet.exceptions.InvalidFormulaException;
@@ -15,6 +8,10 @@ import de.congrace.exp4j.ExpressionBuilder;
 import de.congrace.exp4j.UnknownFunctionException;
 import de.congrace.exp4j.UnparsableExpressionException;
 
+/**
+ * Cell class - basic unit of the spreadsheet
+ * @author Huantao, Hojabr, Santhosh, Yi, Nick, Amy
+ */
 public class Cell {
 	protected String sCellname;
 	protected final Double nDefaultValue = 0.0;
@@ -308,8 +305,8 @@ public class Cell {
 	 * Method to set cell content
 	 * @param content Cell content
 	 * @return True if valid and set
-	 * @throws InvalidFormulaException thrown if the formula is invalid
-	 * @throws InvalidValueException 
+	 * @throws InvalidFormulaException thrown if the formula is invalid (caught/handled in controller)
+	 * @throws InvalidValueException thrown if the value is invalid (caught/handled in controller)
 	 */
 	public boolean setCellContent(String content) throws InvalidFormulaException, InvalidValueException{
 		boolean ret;
@@ -330,8 +327,8 @@ public class Cell {
 
 	/**
 	 * For user to view content of cell value, to be used for usecase 2
-	 * @throws InvalidFormulaException thrown if formula is invalid
-	 * @throws InvalidValueException thrown if value is invalid
+	 * @throws InvalidFormulaException thrown if formula is invalid (caught/handled in controller)
+	 * @throws InvalidValueException thrown if value is invalid (caught/handled in controller)
 	 */
 	public String getCellValue(Cell cells[][]) throws InvalidFormulaException, InvalidValueException{
 		String ret = "";

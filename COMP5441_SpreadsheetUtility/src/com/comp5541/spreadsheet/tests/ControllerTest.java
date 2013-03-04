@@ -10,6 +10,11 @@ import com.comp5541.spreadsheet.exceptions.InvalidFormulaException;
 import com.comp5541.spreadsheet.exceptions.InvalidValueException;
 import com.comp5541.spreadsheet.model.Cell;
 
+/**
+ * Tests for Controller class
+ * @author Nick
+ *
+ */
 public class ControllerTest {
 
 	//----------test method: selectCell()

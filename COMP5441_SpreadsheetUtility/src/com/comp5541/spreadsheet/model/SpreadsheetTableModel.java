@@ -6,6 +6,12 @@ import com.comp5541.spreadsheet.controller.Controller;
 import com.comp5541.spreadsheet.exceptions.InvalidFormulaException;
 import com.comp5541.spreadsheet.exceptions.InvalidValueException;
 
+/**
+ * SpreadsheetTableModel class - model of the system. Contains spreadsheet instance with spreadsheet data.
+ * Facilitates displaying of cells using JTable by extending AbstractTableModel.
+ * @author Amy
+ *
+ */
 public class SpreadsheetTableModel extends AbstractTableModel
 {
 	private Spreadsheet spreadsheet;
@@ -57,7 +63,7 @@ public class SpreadsheetTableModel extends AbstractTableModel
 	/**
 	 * Method to get the spreadsheet cells
 	 * @return Spreadsheet
-	 * @throws InvalidFormulaException thrown from calculate() if formula is invalid
+	 * @throws InvalidFormulaException thrown from calculate() if formula is invalid (caught/handled in the Controller)
 	 */
 	public Cell[][] getSpreadsheetCells() throws InvalidFormulaException
 	{
@@ -66,14 +72,16 @@ public class SpreadsheetTableModel extends AbstractTableModel
 	}
 	
 	/**
-	 * Method to set the spreadsheet cells
+	 * Method to set the spreadsheet cells and notify the view (Observer pattern)
 	 * @param cells
-	 * @throws InvalidFormulaException thrown from calculate() if formula is invalid
+	 * @throws InvalidFormulaException thrown from calculate() if formula is invalid (caught/handled in the Controller)
 	 */
 	public void setSpreadsheetCells(Cell[][] cells) throws InvalidFormulaException
 	{
 		model.spreadsheet.cells = cells;
 		model.spreadsheet.calculate();
+		
+		//notify the view of data change
 		fireTableDataChanged();
 	}
 	
@@ -82,8 +90,8 @@ public class SpreadsheetTableModel extends AbstractTableModel
 	 * @param row row index
 	 * @param column column index
 	 * @return Cell value (String)
-	 * @throws InvalidFormulaException thrown from getCellValue() if formula is invalid
-	 * @throws InvalidValueException thrown from getCellValue() if value is invalid
+	 * @throws InvalidFormulaException thrown from getCellValue() if formula is invalid (caught/handled in the Controller)
+	 * @throws InvalidValueException thrown from getCellValue() if value is invalid (caught/handled in the Controller)
 	 */
 	public String getValue(int row, int column) throws InvalidFormulaException, InvalidValueException
 	{
@@ -95,8 +103,8 @@ public class SpreadsheetTableModel extends AbstractTableModel
 	 * @param value Value to be set
 	 * @param row row index
 	 * @param column column index
-	 * @throws InvalidFormulaException thrown from setCellContent()/calculate() if formula is invalid
-	 * @throws InvalidValueException thrown from setCellContent() if value is invalid
+	 * @throws InvalidFormulaException thrown from setCellContent()/calculate() if formula is invalid (caught/handled in the Controller)
+	 * @throws InvalidValueException thrown from setCellContent() if value is invalid (caught/handled in the Controller)
 	 */
 	public void setValue(String value, int row, int column) throws InvalidFormulaException, InvalidValueException
 	{
@@ -136,7 +144,7 @@ public class SpreadsheetTableModel extends AbstractTableModel
 	}
 
 	/**
-	 * Overridden method to set the value of a cell and notify JTable of data change
+	 * Overridden method to set the value of a cell and notify the view of data change (Observer pattern)
 	 * @param value Cell content
 	 * @param row Row index of the cell
 	 * @param column Column index of the cell
@@ -147,6 +155,8 @@ public class SpreadsheetTableModel extends AbstractTableModel
 		try
 		{
 			setValue(value.toString(), row, column);
+			
+			//notify the view of data change
 			fireTableDataChanged();
 		}
 		catch(Exception ex)

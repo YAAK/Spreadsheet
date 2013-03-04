@@ -1,13 +1,13 @@
-/**
- * @function: Cell 
- * @author Huantao Liu 5998662, Hojabr Sattari 6435807, Santhosh Srinivasan 6583059 ,Yi Wang 9676449
- * @Modified by:
- * @date 2013.1.18
- */
+
 package com.comp5541.spreadsheet.model;
 
 import com.comp5541.spreadsheet.exceptions.InvalidFormulaException;
 
+/**
+ * Spreadsheet class - contains two-dimensional cell array with cell content
+ * @author Nick, Amy
+ *
+ */
 public class Spreadsheet {
 	Cell cells[][];
 
@@ -35,7 +35,7 @@ public class Spreadsheet {
 	}
 	/**
 	 * this method is used to calculate all the cell's value for the whole spreadsheet
-	 * @throws InvalidFormulaException 
+	 * @throws InvalidFormulaException (caught/handled in the Controller)
 	 */
 	public boolean calculate() throws InvalidFormulaException {
 		for (int i = 0; i < 10; i++) {
@@ -72,7 +72,7 @@ public class Spreadsheet {
 
 	/**
 	 * check if the user's input cellname exixts
-	 * @return
+	 * @return True if there are no errors
 	 */
 	public boolean selectCell(String cellname){
 		boolean ret = false;

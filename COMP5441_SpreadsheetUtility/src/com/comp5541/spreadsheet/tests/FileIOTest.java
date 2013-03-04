@@ -12,6 +12,11 @@ import com.comp5541.spreadsheet.exceptions.InvalidValueException;
 import com.comp5541.spreadsheet.model.SpreadsheetTableModel;
 import com.comp5541.spreadsheet.controller.*;
 
+/**
+ * Tests for FileIO class
+ * @author Hojabr
+ *
+ */
 public class FileIOTest {
 	/**
 	 * Tests LoadFromFile with Invalid File Type
@@ -46,7 +51,7 @@ public class FileIOTest {
 	public void testSaveToFilevalidFormulaException() throws NumberFormatException, IOException, InvalidFormulaException, InvalidFileTypeException, InvalidValueException {
 		SpreadsheetTableModel model = SpreadsheetTableModel.getInstance();
 		model.setValue("=A9", 1, 1);
-		FileIO.saveToFile("SpreadSheet.txt", model);
+		FileIO.saveToFile("SpreadSheetSave.txt", model);
 	}
 	
 	/**
@@ -56,7 +61,7 @@ public class FileIOTest {
 	public void testSaveToFilevalidValueException() throws NumberFormatException, IOException, InvalidFormulaException, InvalidFileTypeException, InvalidValueException {
 		SpreadsheetTableModel model = SpreadsheetTableModel.getInstance();
 		model.setValue("=G2",1 ,1);
-		FileIO.saveToFile("SpreadSheet.txt", model);
+		FileIO.saveToFile("SpreadSheetSave.txt", model);
 	}
 	
 	/**
