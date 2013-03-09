@@ -28,7 +28,7 @@ public class Controller{
 	//model - contains spreadsheet data
 	private SpreadsheetTableModel model;
 	//view
-	private SpreadsheetGUI view;
+	//private SpreadsheetGUI view;
 	
 	/**
 	 * Default constructor
@@ -36,7 +36,6 @@ public class Controller{
 	private Controller()
 	{
 		model = SpreadsheetTableModel.getInstance();
-		view = new SpreadsheetGUI();
 	}
 	
 	/**
@@ -65,8 +64,9 @@ public class Controller{
 	 */
 	private static void initializeComponents(Controller controller)
 	{
-		controller.view.setModel(controller.model);
-		controller.view.setVisible(true);
+		SpreadsheetGUI view = new SpreadsheetGUI(controller.model);	
+		//view.setModel(controller.model);
+		view.setVisible(true);			
 	}
 	
 	/**
@@ -116,6 +116,11 @@ public class Controller{
 			//display message
 			displayMessage(ex.getMessage());
 		}
+	}
+	
+	public String getCellName(int row, int col)
+	{
+		return controller.model.getCellName(row, col);
 	}
 	
 	/**
@@ -172,10 +177,11 @@ public class Controller{
 	
 	/**
 	 * Method to display message to user on the view
+	 * @throws Exception 
 	 */
 	public void displayMessage(String message)
 	{
-		view.displayMessage(message);
+		//view.displayMessage(message);
 	}
 
 }

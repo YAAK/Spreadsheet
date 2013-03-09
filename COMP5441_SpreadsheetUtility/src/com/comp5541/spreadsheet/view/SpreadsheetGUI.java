@@ -10,6 +10,10 @@ import java.awt.event.MouseListener;
 import javax.swing.BorderFactory;
 import javax.swing.JTable;
 import javax.swing.JViewport;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
 
@@ -37,14 +41,15 @@ public class SpreadsheetGUI extends javax.swing.JFrame implements MouseListener,
 	/**
      * Creates new form SpreadsheetGUI
      */
-    public SpreadsheetGUI() {
-        initComponents();
+    public SpreadsheetGUI(TableModel model) {
+        initComponents(model);
+        this.setModel(model);
     }
 	
     /**
      * This method is called from within the constructor to initialize the form.
      */
-    private void initComponents() {
+    private void initComponents(TableModel model) {
 
     	instructionsLabel = new javax.swing.JLabel(sInstructions);
         inputLineLabel = new javax.swing.JLabel();
@@ -65,16 +70,37 @@ public class SpreadsheetGUI extends javax.swing.JFrame implements MouseListener,
         
         inputLineTextField.addKeyListener(this);
 
-        jScrollPane.setPreferredSize(new java.awt.Dimension(375, 352));
-
+        
+        
+        spreadsheetTable.setRowHeight(32);
+        int heightTable = model.getRowCount() * spreadsheetTable.getRowHeight();
+        //int widthTable = model.getColumnCount() * spreadsheetTable.getColumnCount();
+        //spreadsheetTable.setPreferredSize(new java.awt.Dimension(300, heightTable));
+        //jScrollPane.setPreferredSize(new java.awt.Dimension(800, 200));//heightTable));
+        
+        spreadsheetTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         spreadsheetTable.setColumnSelectionAllowed(true);
         spreadsheetTable.addMouseListener(this);
         spreadsheetTable.setName(""); // NOI18N
-        spreadsheetTable.setPreferredSize(new java.awt.Dimension(800, 320));
-        spreadsheetTable.setRowHeight(32);
+        spreadsheetTable.getSelectionModel().addListSelectionListener( new ListSelectionListener() {
+            public void valueChanged(ListSelectionEvent lse) {
+                if (!lse.getValueIsAdjusting()) {                
+                	updateSelectedCellLabel();
+                }
+            }
+        });
+        spreadsheetTable.getColumnModel().getSelectionModel().addListSelectionListener( new ListSelectionListener() {
+            public void valueChanged(ListSelectionEvent lse) {
+                if (!lse.getValueIsAdjusting()) {                
+                	updateSelectedCellLabel();
+                }
+            }
+        });             
+
+        jScrollPane.setAutoscrolls(true);
         jScrollPane.setViewportView(spreadsheetTable);
-        viewportRowHeader.setView(getRowHeader());
-        viewportRowHeader.setPreferredSize(new Dimension(50, spreadsheetTable.getPreferredSize().height));
+        viewportRowHeader.setView(getRowHeader(model));
+        viewportRowHeader.setPreferredSize(new Dimension(50, heightTable));//spreadsheetTable.getPreferredSize().height));
         jScrollPane.setRowHeader(viewportRowHeader);
         spreadsheetTable.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 
@@ -136,8 +162,10 @@ public class SpreadsheetGUI extends javax.swing.JFrame implements MouseListener,
     /**
      * Create row header for spreadsheet 
      */
-    public JTable getRowHeader()
+    public JTable getRowHeader(TableModel model)
     {
+    	final int iRowCount = model.getRowCount();
+    	
     	//row header TableModel
     	TableModel rowHeaderModel = new AbstractTableModel() {
     		public int getColumnCount() 
@@ -146,7 +174,7 @@ public class SpreadsheetGUI extends javax.swing.JFrame implements MouseListener,
     		}
     		public int getRowCount() 
     		{ 
-    			return 10;
+    			return iRowCount;//model.getRowCount();
     		}
     		public String getColumnName(int col) 
     		{ 
@@ -178,6 +206,9 @@ public class SpreadsheetGUI extends javax.swing.JFrame implements MouseListener,
      */
 	public void setModel(TableModel model)
 	{
+		
+		//model.getRowCount()
+		
 		spreadsheetTable.setModel(model);
 	}
 
@@ -190,32 +221,58 @@ public class SpreadsheetGUI extends javax.swing.JFrame implements MouseListener,
 	@Override
 	public void mouseClicked(MouseEvent e)
 	{
+		try
+		{
 		Controller controller = Controller.getInstance();
 		
 		//to save a file
 		if(e.getSource().getClass() == javax.swing.JButton.class && (javax.swing.JButton)e.getSource() == this.saveButton)
 		{
-			controller.saveSpreadsheetToFile(this.inputLineTextField.getText().trim());
+			String fileName = this.inputLineTextField.getText().trim();
+			controller.saveSpreadsheetToFile(fileName);
+			displayMessage("File " + fileName + " saved.");
 		}
 		
 		//to load a file
 		else if(e.getSource().getClass() == javax.swing.JButton.class && (javax.swing.JButton)e.getSource() == this.loadButton)
 		{
-			controller.loadSpreadsheetFromFile(this.inputLineTextField.getText().trim());
-		}
-		
+			String fileName = this.inputLineTextField.getText().trim();
+			controller.loadSpreadsheetFromFile(fileName);
+			displayMessage("File " + fileName + " loaded");
+		}		
 		//to show selected cell name before the input line
 		else
 		{
-			int row = spreadsheetTable.getSelectedRow();
-			int col = spreadsheetTable.getSelectedColumn();
-			if(row != -1 && col != -1)
-			{
-				Cell selectedCell = controller.selectCell(row, col);
-				this.inputLineLabel.setText(selectedCell.getCellname());
-			}
+			updateSelectedCellLabel();
 		}
 	}
+	catch (Exception ex)
+	{
+		displayMessage(ex.getClass().getName() + ": " + ex.getMessage());
+	}		
+
+	}
+	
+	
+	private void updateSelectedCellLabel()
+	{
+		try
+		{
+		int row = spreadsheetTable.getSelectedRow();
+		int col = spreadsheetTable.getSelectedColumn();
+		if(row != -1 && col != -1)
+		{
+			//Cell selectedCell = controller.selectCell(row, col);
+			Controller controller = Controller.getInstance();
+			String cellName = controller.getCellName(row, col);
+			this.inputLineLabel.setText(cellName);//(selectedCell.getCellname());
+		}
+		}
+		catch (Exception ex)
+		{
+			displayMessage(ex.getClass().getName() + ": " + ex.getMessage());
+		}		
+	} 
 
 	/**
 	 * Method to detect when the user presses and releases the "Enter" key on the input line
@@ -223,6 +280,8 @@ public class SpreadsheetGUI extends javax.swing.JFrame implements MouseListener,
 	@Override
 	public void keyReleased(KeyEvent e)
 	{
+		try
+		{
 		if(e.getKeyCode() == KeyEvent.VK_ENTER)
 		{
 			//to clear any previous messages
@@ -231,17 +290,28 @@ public class SpreadsheetGUI extends javax.swing.JFrame implements MouseListener,
 			if(!inputLineLabel.getText().contains(".txt"))
 			{
 				Controller controller = Controller.getInstance();
-				Cell cell = controller.getselectedCell();
+				//Cell cell = controller.getselectedCell();
 				
 				//if a cell is selected
-				if(cell != null)
-				{
+				//if(cell != null)
+				//{
 					//enter cell content and compute value
-					controller.enterCellContent(cell.getRow(), cell.getColumn(), inputLineTextField.getText());
+				int row = spreadsheetTable.getSelectedRow();
+				int col = spreadsheetTable.getSelectedColumn();
+				
+				
+					//controller.enterCellContent(cell.getRow(), cell.getColumn(), inputLineTextField.getText());
+					controller.enterCellContent( row, col, inputLineTextField.getText());
 					inputLineTextField.setText("");
-				}
+				//}
 			}
 		}
+		}
+		catch (Exception ex)
+		{
+			displayMessage(ex.getClass().getName() + ": " + ex.getMessage());
+		}
+
 	}
 	
 	/**
@@ -310,4 +380,7 @@ public class SpreadsheetGUI extends javax.swing.JFrame implements MouseListener,
 		// TODO Auto-generated method stub
 		
 	}
+	
+	
+	
 }

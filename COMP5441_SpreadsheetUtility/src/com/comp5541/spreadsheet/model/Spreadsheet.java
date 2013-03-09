@@ -11,22 +11,24 @@ import com.comp5541.spreadsheet.exceptions.InvalidFormulaException;
 public class Spreadsheet {
 	Cell cells[][];
 
-	int nColumns = 11;
-	int nRows = 10;
+	int nColumns = 26;
+	int nRows = 999;
 	Cell selectedCell = null;
+	
+	String[] columnNames;
 
 	/**
 	 * Default constructor for Spreadsheet
 	 * Initializes cell array (Cell[10][12]), sets cell name and row/column indices
 	 */
 	public Spreadsheet(){
-		cells = new Cell[10][11];
-		String column[] ="ABCDEFGHIJK".split(""); 
-		for(int i=0;i<10;i++){
-			for(int j=0;j<11;j++){
+		cells = new Cell[nRows][nColumns];
+		columnNames ="A B C D E F G H I J K I M N O P Q R S T U V W X Y Z".split(" ");
+		for(int i=0;i<nRows;i++){
+			for(int j=0;j<nColumns;j++){
 				
 				//set cell name
-				cells[i][j] = new Cell(""+column[j+1]+(i+1));
+				cells[i][j] = new Cell(""+columnNames[j]+(i+1));
 				cells[i][j].setRow(i);
 				cells[i][j].setColumn(j);
 			}
@@ -38,8 +40,9 @@ public class Spreadsheet {
 	 * @throws InvalidFormulaException (caught/handled in the Controller)
 	 */
 	public boolean calculate() throws InvalidFormulaException {
-		for (int i = 0; i < 10; i++) {
-			for (int j = 0; j < 11; j++) {
+		for (int i = 0; i < nRows; i++) {
+			for (int j = 0; j < nColumns; j++) {
+				//if (cells[i][j]==null) continue;
 				cells[i][j].bValid = false;
 				if ((cells[i][j].hasFormula()) && (!cells[i][j].hasValue())) {// if this cell has formula,
 					// parse it
@@ -59,9 +62,9 @@ public class Spreadsheet {
 				}
 			}
 		}
-		for (int i = 0; i < 10; i++) {
-			for (int j = 0; j < 11; j++) {
-				if(!cells[i][j].bValid){
+		for (int i = 0; i < nRows; i++) {
+			for (int j = 0; j < nColumns; j++) {
+				if(cells[i][j]!=null && !cells[i][j].bValid){
 					throw new InvalidFormulaException("The cell "+cells[i][j].sCellname+"'s formula is invalid");
 				}
 			}

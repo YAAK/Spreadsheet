@@ -15,7 +15,7 @@ import com.comp5541.spreadsheet.exceptions.InvalidValueException;
 public class SpreadsheetTableModel extends AbstractTableModel
 {
 	private Spreadsheet spreadsheet;
-	private String[] columnNames;
+	//private String[] columnNames;
 	private static SpreadsheetTableModel model;
 	
 	/**
@@ -24,7 +24,7 @@ public class SpreadsheetTableModel extends AbstractTableModel
 	private SpreadsheetTableModel()
 	{
 		spreadsheet = new Spreadsheet();
-		columnNames = new String[]{"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K"};
+		//columnNames = new String[]{"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K"};
 	}
 
 	/**
@@ -59,6 +59,13 @@ public class SpreadsheetTableModel extends AbstractTableModel
 	{
 		return model.spreadsheet.getSelectedCell();
 	}
+	
+	
+	public String getCellName(int row, int col)
+	{
+		return model.spreadsheet.columnNames[col]+Integer.toString(row+1);
+	}
+	
 	
 	/**
 	 * Method to get the spreadsheet cells
@@ -108,8 +115,13 @@ public class SpreadsheetTableModel extends AbstractTableModel
 	 */
 	public void setValue(String value, int row, int column) throws InvalidFormulaException, InvalidValueException
 	{
-		model.spreadsheet.selectCell(row, column);
-		model.spreadsheet.selectedCell.setCellContent(value);
+		//model.spreadsheet.selectCell(row, column);
+		//model.spreadsheet.selectedCell.setCellContent(value);
+		
+		Cell cell = model.spreadsheet.cells[row][column];
+		if (cell==null) cell = model.spreadsheet.cells[row][column] = new Cell(getCellName(row,column));
+		cell.setCellContent(value);
+		
 		model.spreadsheet.calculate();
 	}
 	
@@ -120,7 +132,7 @@ public class SpreadsheetTableModel extends AbstractTableModel
 	@Override
 	public String getColumnName(int col)
 	{
-		return model.columnNames[col];
+		return model.spreadsheet.columnNames[col];
 	}
 	
 	/**

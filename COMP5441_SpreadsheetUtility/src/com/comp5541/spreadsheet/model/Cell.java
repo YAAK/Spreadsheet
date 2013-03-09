@@ -201,8 +201,8 @@ public class Cell {
 		int n=1;
 		loop:
 			while(flag){
-				for(int i=0;i<10;i++){		
-					for(int j=0;j<11;j++){ 			    //get each cell's name,and replace them with primitive value				   
+				for(int i=999-1;i>=0;i--){		
+					for(int j=0;j<26;j++){ 			    //get each cell's name,and replace them with primitive value				   
 						if(str.contains(selfname)){		//get the name of cell according to the formula's variable
 							this.bValid = false;
 							break loop;
@@ -227,7 +227,7 @@ public class Cell {
 						}
 					}
 				}
-				if(str.matches(".*[A-K].*")){//still have cellname in str, do while again
+				if(str.matches(".*[A-Z].*")){//still have cellname in str, do while again
 					if(n>50){
 						flag = false;
 						this.bValid = false;
@@ -276,7 +276,7 @@ public class Cell {
 		if(cont[1].equals("=")&&cont.length>2){//check if it's a formula
 			ret = "formula";
 			for(int i=2;i<cont.length;i++){
-				if(!cont[i].matches( "^[A-K0-9+\\-*/()]$" )){
+				if(!cont[i].matches( "^[A-Z0-999+\\-*/()]$" )){
 					throw new InvalidFormulaException("The formula you entered does not match the syntax of a valid formula.");
 				}
 			}
