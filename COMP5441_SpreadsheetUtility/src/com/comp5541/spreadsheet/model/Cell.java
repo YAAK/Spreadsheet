@@ -94,6 +94,11 @@ public class Cell {
 		this.bValid = bValid;
 	}
 
+	public String getFormatting()
+	{
+		return sFormatting;
+	}
+	
 	/**
 	 * Method to get a cell's default value (0.0)
 	 * @return cell's default value (0.0)

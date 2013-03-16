@@ -29,6 +29,10 @@ import com.comp5541.spreadsheet.model.SpreadsheetTableModel;
  */
 public class FileIO {
 	
+	final static int nColumns = 26;
+	final static int nRows = 999;
+	
+	
 	/**
 	 * Method to load spreadsheet from file - data is loaded into the model (SpreadsheetTableModel)
 	 * @param filepath Path of the file to load from
@@ -52,12 +56,12 @@ public class FileIO {
 		// Get the object of DataInputStream
 		DataInputStream in = new DataInputStream(fstream);
 		BufferedReader br = new BufferedReader(new InputStreamReader(in));
-		for (int i = 0; i < sheet.nRows; i++) {
+		for (int i = 0; i < nRows; i++) {
 			String line = "";
 			String[] value;
 			if ((line = br.readLine()) != null) {
 				value = line.split("          ");
-				int iColumns = (value.length>sheet.nColumns)? sheet.nColumns: value.length;
+				int iColumns = (value.length>nColumns)? nColumns: value.length;
 				for (int j = 0; j < iColumns; j++) {
 					
 					cells[i][j].setCellContent(value[j]);
@@ -89,10 +93,12 @@ public class FileIO {
 			
 		FileOutputStream fstream = new FileOutputStream(filename);
 		DataOutputStream doutS = new DataOutputStream(fstream);
-		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i < nRows; i++) {
 			String line = "";
-			for (int j = 0; j < 11; j++) {
-				line = line+cells[i][j].getValue()+"          ";
+			for (int j = 0; j < nColumns; j++) {
+				String value = cells[i][j].getValue().toString();
+				if (cells[i][j].getFormatting()!=null) value = value+":" + cells[i][j].getFormatting(); 
+				line = line+value+"          ";
 			}
 			doutS.writeBytes(line+ "\r\n");//write a line into file
 		}
@@ -112,12 +118,13 @@ public class FileIO {
 		FileInputStream fstream = new FileInputStream(filename);
 		DataInputStream in = new DataInputStream(fstream);
 		BufferedReader br = new BufferedReader(new InputStreamReader(in));
-		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i < nRows; i++) {
 			String line = "";
 			String[] value;
 			if ((line = br.readLine()) != null) {
 				value = line.split("          ");
-				for (int j = 0; j < 11; j++) {
+				int iColumns = (value.length>nColumns)? nColumns: value.length;
+				for (int j = 0; j < iColumns; j++) {
 					if(Cell.validateContent(value[j]).equals("error")){
 						System.out.println("there exists error at line "+(++i)+" column "+(++j)+" plese fix them first");
 						in.close();

@@ -230,7 +230,6 @@ public class SpreadsheetGUI extends javax.swing.JFrame implements MouseListener,
 		{
 			String fileName = this.inputLineTextField.getText().trim();
 			controller.saveSpreadsheetToFile(fileName);
-			displayMessage("File " + fileName + " saved.");
 		}
 		
 		//to load a file
