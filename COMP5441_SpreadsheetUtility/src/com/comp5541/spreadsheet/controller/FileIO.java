@@ -37,8 +37,9 @@ public class FileIO {
 	 * @throws NumberFormatException 
 	 * @throws InvalidFormulaException 
 	 * @throws InvalidFileTypeException 
+	 * @throws InvalidValueException 
 	 */
-	public static void loadFromFile(String filepath, SpreadsheetTableModel model) throws NumberFormatException, IOException, InvalidFormulaException, InvalidFileTypeException {
+	public static void loadFromFile(String filepath, SpreadsheetTableModel model) throws InvalidValueException, NumberFormatException, IOException, InvalidFormulaException, InvalidFileTypeException {
 		
 		//check that file type is correct
 		if(!filepath.endsWith(".txt"))
@@ -51,19 +52,16 @@ public class FileIO {
 		// Get the object of DataInputStream
 		DataInputStream in = new DataInputStream(fstream);
 		BufferedReader br = new BufferedReader(new InputStreamReader(in));
-		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i < sheet.nRows; i++) {
 			String line = "";
 			String[] value;
 			if ((line = br.readLine()) != null) {
 				value = line.split("          ");
-				for (int j = 0; j < 11; j++) {
-					// assign input formula or nValue
-					if (value[j].substring(0, 1).equals("=")) {
-						// input value starts with "=", means it is a formula
-						cells[i][j].setFormula(value[j]);
-					} else {
-						cells[i][j].setValue(Double.valueOf(value[j]));
-					}
+				int iColumns = (value.length>sheet.nColumns)? sheet.nColumns: value.length;
+				for (int j = 0; j < iColumns; j++) {
+					
+					cells[i][j].setCellContent(value[j]);
+					
 				}
 			} else {
 				break;

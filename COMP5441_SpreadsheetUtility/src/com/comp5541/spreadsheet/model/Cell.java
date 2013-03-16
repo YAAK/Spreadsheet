@@ -20,6 +20,7 @@ public class Cell {
 	protected int nRow;
 	protected Double nValue = null;
 	boolean bValid = false;
+	protected String sFormatting = null;
 
 	/**
 	 * Method to retrieve the name of a cell
@@ -291,10 +292,17 @@ public class Cell {
 			throw new InvalidFormulaException("Did you mean to enter a cell value? If so, do not add '=' at the start.");
 		}else{//check if it's an value
 			ret = "value";
-			for(int i=1;i<cont.length;i++){
-				if(!cont[i].matches( "^[0-9.]$" )){
-					throw new InvalidValueException("Invalid value. Did you mean to enter a formula? If so, please add '=' at the start of the formula.");
-				}
+			//check if formating is assigned
+			int formIndx = content.indexOf(':');
+			if (formIndx>0)
+			{
+				String formatting = content.substring(formIndx+1);
+				if (!formatting.matches("^[msiMSI]$"))
+					throw new InvalidValueException("Invalid formating. Possible values for the formating M,S,I.");
+				content = content.substring(0, formIndx);
+			}
+			if(!content.matches("\\d{1,5}(\\.\\d{1,5})?")){//( "^[0-9.]$" )){
+				throw new InvalidValueException("Invalid value. Did you mean to enter a formula? If so, please add '=' at the start of the formula.");
 			}
 		}
 
@@ -310,8 +318,15 @@ public class Cell {
 	 */
 	public boolean setCellContent(String content) throws InvalidFormulaException, InvalidValueException{
 		boolean ret;
+				
 		String result = validateContent(content);
 		if(result.equals("value")){
+			int formIndx = content.indexOf(':');
+			if (formIndx>0)
+			{ 
+				this.sFormatting = content.substring(formIndx+1).toUpperCase();
+				content = content.substring(0, formIndx);
+			}			
 			this.nValue = Double.parseDouble(content);
 			this.bValid = true;
 			ret = true;

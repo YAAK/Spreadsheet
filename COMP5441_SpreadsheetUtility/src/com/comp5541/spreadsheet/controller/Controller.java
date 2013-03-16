@@ -8,10 +8,6 @@ package com.comp5541.spreadsheet.controller;
 
 import java.io.File;
 
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
-
-import com.comp5541.spreadsheet.exceptions.InvalidFormulaException;
 import com.comp5541.spreadsheet.model.Cell;
 import com.comp5541.spreadsheet.model.SpreadsheetTableModel;
 import com.comp5541.spreadsheet.view.SpreadsheetGUI;
@@ -24,11 +20,11 @@ import com.comp5541.spreadsheet.view.SpreadsheetGUI;
 public class Controller{
 	
 	//controller
-	private static Controller controller = new Controller();
+	private static Controller controller = null;
 	//model - contains spreadsheet data
 	private SpreadsheetTableModel model;
 	//view
-	//private SpreadsheetGUI view;
+	private SpreadsheetGUI view;
 	
 	/**
 	 * Default constructor
@@ -45,7 +41,10 @@ public class Controller{
 	public static Controller getInstance()
 	{
 		if(controller == null)
+		{
 			controller = new Controller();
+			controller.view = new SpreadsheetGUI(controller.model);
+		}
 		
 		return controller;
 	}
@@ -56,18 +55,10 @@ public class Controller{
 	 */
 	public static void main(String[] args) {
 		Controller controller = Controller.getInstance();
-		initializeComponents(controller);
+		//initializeComponents(controller);
+		controller.view.setVisible(true);
 	}
 	
-	/**
-	 * Method to initialize the view and set the default model
-	 */
-	private static void initializeComponents(Controller controller)
-	{
-		SpreadsheetGUI view = new SpreadsheetGUI(controller.model);	
-		//view.setModel(controller.model);
-		view.setVisible(true);			
-	}
 	
 	/**
 	 * Method to select a cell
@@ -181,7 +172,7 @@ public class Controller{
 	 */
 	public void displayMessage(String message)
 	{
-		//view.displayMessage(message);
+		view.displayMessage(message);
 	}
 
 }

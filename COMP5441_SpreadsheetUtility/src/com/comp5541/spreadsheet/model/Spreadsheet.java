@@ -11,8 +11,8 @@ import com.comp5541.spreadsheet.exceptions.InvalidFormulaException;
 public class Spreadsheet {
 	Cell cells[][];
 
-	int nColumns = 26;
-	int nRows = 999;
+	public final int nColumns = 26;
+	public final int nRows = 999;
 	Cell selectedCell = null;
 	
 	String[] columnNames;

@@ -22,7 +22,7 @@ public class FileIOTest {
 	 * Tests LoadFromFile with Invalid File Type
 	 */
 	@Test(expected = InvalidFileTypeException.class)
-	public void testLoadFromFileInvalidFileTypeException() throws NumberFormatException, IOException, InvalidFormulaException, InvalidFileTypeException {
+	public void testLoadFromFileInvalidFileTypeException() throws InvalidValueException, NumberFormatException, IOException, InvalidFormulaException, InvalidFileTypeException {
 		SpreadsheetTableModel model = SpreadsheetTableModel.getInstance();
 		FileIO.loadFromFile("aa.docz", model);
 	}
@@ -35,7 +35,7 @@ public class FileIOTest {
 	 * @throws NumberFormatException 
 	 */
 	@Test
-	public void testLoadFromFileValidFileType() throws NumberFormatException, IOException, InvalidFormulaException, InvalidFileTypeException  {
+	public void testLoadFromFileValidFileType() throws InvalidValueException, NumberFormatException, IOException, InvalidFormulaException, InvalidFileTypeException  {
 		SpreadsheetTableModel model = SpreadsheetTableModel.getInstance();
 		FileIO.loadFromFile("SpreadSheet.txt", model);
 	}

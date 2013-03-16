@@ -1,5 +1,7 @@
 package com.comp5541.spreadsheet.model;
 
+import java.text.NumberFormat;
+
 import javax.swing.table.AbstractTableModel;
 
 import com.comp5541.spreadsheet.controller.Controller;
@@ -187,7 +189,12 @@ public class SpreadsheetTableModel extends AbstractTableModel
 		String value = "";
 		try
 		{
-			value = getValue(rowIndex, columnIndex);
+			Cell cell = model.spreadsheet.cells[rowIndex][columnIndex];
+			value = cell.getCellValue(model.spreadsheet.cells);
+			if (cell.sFormatting!=null)				
+				if (cell.sFormatting.equalsIgnoreCase("m")) value = String.format("$%.2f", cell.nValue);
+				else if (cell.sFormatting.equalsIgnoreCase("s")) value = String.format("%6.3e", cell.nValue);
+				else if (cell.sFormatting.equalsIgnoreCase("i")) value = String.format("%.0f", cell.nValue);
 		}
 		catch (Exception e)
 		{

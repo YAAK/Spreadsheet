@@ -237,8 +237,7 @@ public class SpreadsheetGUI extends javax.swing.JFrame implements MouseListener,
 		else if(e.getSource().getClass() == javax.swing.JButton.class && (javax.swing.JButton)e.getSource() == this.loadButton)
 		{
 			String fileName = this.inputLineTextField.getText().trim();
-			controller.loadSpreadsheetFromFile(fileName);
-			displayMessage("File " + fileName + " loaded");
+			controller.loadSpreadsheetFromFile(fileName);			
 		}		
 		//to show selected cell name before the input line
 		else
