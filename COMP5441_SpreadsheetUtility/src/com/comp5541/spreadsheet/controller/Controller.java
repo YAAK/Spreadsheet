@@ -66,7 +66,7 @@ public class Controller{
 	 * @param col Column index
 	 * @return Selected cell
 	 */
-	public Cell selectCell(int row, int col)
+	/*public Cell selectCell(int row, int col)
 	{
 		Cell cell = null;
 		try
@@ -79,16 +79,16 @@ public class Controller{
 		}
 		
 		return cell;
-	}
+	}*/
 	
 	/**
 	 * Method to return a selected cell
 	 * @return Cell
 	 */
-	public Cell getselectedCell()
+	/*public Cell getselectedCell()
 	{
 		return controller.model.getSelectedCell();
-	}
+	}*/
 	
 	/**
 	 * Method to enter cell content

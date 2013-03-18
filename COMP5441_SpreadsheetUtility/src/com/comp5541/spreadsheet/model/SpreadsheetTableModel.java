@@ -47,20 +47,20 @@ public class SpreadsheetTableModel extends AbstractTableModel
 	 * @param col Column index
 	 * @return selected cell
 	 */
-	public Cell selectCell(int row, int col)
+	/*public Cell selectCell(int row, int col)
 	{
 		model.spreadsheet.selectCell(row, col);
 		return model.spreadsheet.getSelectedCell();
-	}
+	}*/
 	
 	/**
 	 * Method to return a selected cell
 	 * @return selected cell
 	 */
-	public Cell getSelectedCell()
+	/*public Cell getSelectedCell()
 	{
 		return model.spreadsheet.getSelectedCell();
-	}
+	}*/
 	
 	
 	public String getCellName(int row, int col)

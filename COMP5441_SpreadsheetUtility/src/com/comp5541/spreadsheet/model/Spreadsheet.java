@@ -11,9 +11,9 @@ import com.comp5541.spreadsheet.exceptions.InvalidFormulaException;
 public class Spreadsheet {
 	Cell cells[][];
 
-	public final int nColumns = 26;
-	public final int nRows = 999;
-	Cell selectedCell = null;
+	final int nColumns = 26;
+	final int nRows = 999;
+	//Cell selectedCell = null;
 	
 	String[] columnNames;
 
@@ -77,7 +77,7 @@ public class Spreadsheet {
 	 * check if the user's input cellname exixts
 	 * @return True if there are no errors
 	 */
-	public boolean selectCell(String cellname){
+	/*public boolean selectCell(String cellname){
 		boolean ret = false;
 		try {
 			loop: for (int i = 0; i < 10; i++) {
@@ -94,35 +94,35 @@ public class Spreadsheet {
 			e.printStackTrace();
 			return ret;
 		}
-	}
+	}*/
 	
 	/**
 	 * Select cell by row and column index
 	 * @param row Row index
 	 * @param col Column index
 	 */
-	public void selectCell(int row, int col)
+	/*public void selectCell(int row, int col)
 	{
 		setSelectedCell(cells[row][col]);
-	}
+	}*/
 
 	/**
 	 * Method to get the selected cell
 	 * @return Selected cell
 	 */
-	public Cell getSelectedCell()
+	/*public Cell getSelectedCell()
 	{
 		return selectedCell;
-	}
+	}*/
 	
 	/**
 	 * Method to set the selected cell
 	 * @param selectedCell
 	 */
-	public void setSelectedCell(Cell selectedCell)
+	/*public void setSelectedCell(Cell selectedCell)
 	{
 		this.selectedCell = selectedCell;
-	}
+	}*/
 
 	/**
 	 * Method to get spreadsheet cells

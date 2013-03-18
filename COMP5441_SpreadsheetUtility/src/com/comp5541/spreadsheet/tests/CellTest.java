@@ -238,7 +238,7 @@ public class CellTest {
 	 * @throws InvalidValueException 
 	 * @throws InvalidFormulaException 
 	 */	
-	@Test
+	/*@Test
 	public void testGetCellValueParseFormulaNoParameters() throws InvalidFormulaException, InvalidValueException
 	{
 		Spreadsheet sheet = new Spreadsheet();
@@ -247,7 +247,7 @@ public class CellTest {
 		cell.setCellContent("=1+1");
 		String result = cell.getCellValue(sheet.getCells());
 		assertEquals("2.0", result);
-	}	
+	}*/	
 		
 	
 	/**
@@ -255,7 +255,7 @@ public class CellTest {
 	 * @throws InvalidValueException 
 	 * @throws InvalidFormulaException 
 	 */	
-	@Test
+	/*@Test
 	public void testGetCellValueParseFormulaWithParameter() throws InvalidFormulaException, InvalidValueException
 	{
 		Spreadsheet sheet = new Spreadsheet();
@@ -266,14 +266,14 @@ public class CellTest {
 		cell.setCellContent("=A1+1");
 		String result = cell.getCellValue(sheet.getCells());
 		assertEquals("2.0", result);
-	}	
+	}*/	
 
 	/**
 	 * Test to set values not for the all cells, check that is 0 used 
 	 * @throws InvalidValueException 
 	 * @throws InvalidFormulaException 
 	 */	
-	@Test
+	/*@Test
 	public void testGetCellValueParseFormulaNotInitiatedParameter() throws InvalidFormulaException, InvalidValueException
 	{
 		Spreadsheet sheet = new Spreadsheet();
@@ -282,14 +282,14 @@ public class CellTest {
 		cell.setCellContent("=A1+1");
 		String result = cell.getCellValue(sheet.getCells());
 		assertEquals("1.0", result);
-	}	
+	}*/	
 	
 	/**
 	 * Test to set values and check two levels formula 
 	 * @throws InvalidValueException 
 	 * @throws InvalidFormulaException 
 	 */	
-	@Test
+	/*@Test
 	public void testGetCellValueParseTwoLevelsFormula() throws InvalidFormulaException, InvalidValueException
 	{
 		Spreadsheet sheet = new Spreadsheet();
@@ -302,7 +302,7 @@ public class CellTest {
 		cell.setCellContent("=B1+1");
 	    String result = cell.getCellValue(sheet.getCells());
 		assertEquals("3.0", result);
-	}	
+	}*/	
 
 	
 	/**
@@ -310,7 +310,7 @@ public class CellTest {
 	 * @throws InvalidValueException 
 	 * @throws InvalidFormulaException 
 	 */	
-	@Test(expected = InvalidFormulaException.class)
+	/*@Test(expected = InvalidFormulaException.class)
 	public void testGetCellValueParseFormulaWithErrorInFormula() throws InvalidFormulaException, InvalidValueException
 	{
 		Spreadsheet sheet = new Spreadsheet();
@@ -320,7 +320,7 @@ public class CellTest {
 		Cell cell = sheet.getSelectedCell();
 		cell.setCellContent("=A1+1a");
 		String result = cell.getCellValue(sheet.getCells());
-	}	
+	}*/	
 	
 
 	/**
@@ -328,7 +328,7 @@ public class CellTest {
 	 * @throws InvalidValueException 
 	 * @throws InvalidFormulaException 
 	 */	
-	@Test(expected = InvalidFormulaException.class)
+	/*@Test(expected = InvalidFormulaException.class)
 	public void testGetCellValueParseFormulaWithCellOutOfRange() throws InvalidFormulaException, InvalidValueException
 	{
 		Spreadsheet sheet = new Spreadsheet();
@@ -337,7 +337,7 @@ public class CellTest {
 		cell.setCellContent("=A200+1");
 		String result = cell.getCellValue(sheet.getCells());
 	
-	}	
+	}*/	
 	
 	
 }
