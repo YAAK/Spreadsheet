@@ -331,7 +331,7 @@ public class Cell {
 			{ 
 				this.sFormatting = content.substring(formIndx+1).toUpperCase();
 				content = content.substring(0, formIndx);
-			}			
+			} else this.sFormatting = "";			
 			this.nValue = Double.parseDouble(content);
 			this.bValid = true;
 			ret = true;
