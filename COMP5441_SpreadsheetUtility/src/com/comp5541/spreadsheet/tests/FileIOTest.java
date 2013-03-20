@@ -48,7 +48,7 @@ public class FileIOTest {
 	 * Tests testSaveToFile with valid Formula
 	 */	
 	@Test
-	public void testSaveToFilevalidFormulaException() throws NumberFormatException, IOException, InvalidFormulaException, InvalidFileTypeException, InvalidValueException {
+	public void testSaveToFileValidFormulaException() throws NumberFormatException, IOException, InvalidFormulaException, InvalidFileTypeException, InvalidValueException {
 		SpreadsheetTableModel model = SpreadsheetTableModel.getInstance();
 		model.setValue("=A9", 1, 1);
 		FileIO.saveToFile("SpreadSheetSave.txt", model);
@@ -58,7 +58,7 @@ public class FileIOTest {
 	 * Tests testSaveToFile with valid Value
 	 */	
 	@Test
-	public void testSaveToFilevalidValueException() throws NumberFormatException, IOException, InvalidFormulaException, InvalidFileTypeException, InvalidValueException {
+	public void testSaveToFileValidValueException() throws NumberFormatException, IOException, InvalidFormulaException, InvalidFileTypeException, InvalidValueException {
 		SpreadsheetTableModel model = SpreadsheetTableModel.getInstance();
 		model.setValue("=G2",1 ,1);
 		FileIO.saveToFile("SpreadSheetSave.txt", model);
@@ -71,7 +71,7 @@ public class FileIOTest {
 	 * testing parse formula InvalidValueException
 	 */	
 	@Test(expected = InvalidValueException.class)
-	public void testparseFileInvalidValueException() throws NumberFormatException, IOException, InvalidFormulaException, InvalidFileTypeException, InvalidValueException {
+	public void testParseFileInvalidValueException() throws NumberFormatException, IOException, InvalidFormulaException, InvalidFileTypeException, InvalidValueException {
 		FileIO.parseFile("SpreadSheetTestinvalidvalue.txt");
 	}
 	
@@ -79,14 +79,14 @@ public class FileIOTest {
 	 * testing parse formula with valid Value
 	 */	
 	@Test
-	public void testparseFilevalidValue() throws NumberFormatException, IOException, InvalidFormulaException, InvalidFileTypeException, InvalidValueException {
+	public void testParseFileValidValue() throws NumberFormatException, IOException, InvalidFormulaException, InvalidFileTypeException, InvalidValueException {
 		FileIO.parseFile("SpreadSheetTestvalidvalue.txt");
 	}
 	/**
 	 * testing parse formula InvalidFormulaException
 	 */	
 	@Test(expected = InvalidFormulaException.class)
-	public void testparseFileInvalidFormulaException() throws NumberFormatException, IOException, InvalidFormulaException, InvalidFileTypeException, InvalidValueException {
+	public void testParseFileInvalidFormulaException() throws NumberFormatException, IOException, InvalidFormulaException, InvalidFileTypeException, InvalidValueException {
 		FileIO.parseFile("SpreadSheetTestinvalidformula.txt");
 	}
 
@@ -94,7 +94,7 @@ public class FileIOTest {
 	 * testing parse formula with valid formula
 	 */	
 	@Test
-	public void testparseFilevalidFormula() throws NumberFormatException, IOException, InvalidFormulaException, InvalidFileTypeException, InvalidValueException {
+	public void testParseFileValidFormula() throws NumberFormatException, IOException, InvalidFormulaException, InvalidFileTypeException, InvalidValueException {
 		FileIO.parseFile("SpreadSheetTestvalidformula.txt");
 	}
 }
