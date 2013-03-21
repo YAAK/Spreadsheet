@@ -286,9 +286,9 @@ public class Cell {
 					throw new InvalidFormulaException("The formula you entered does not match the syntax of a valid formula.");
 				}
 			}
-			if(content.trim().substring(1).matches(".*[A-K].*")){
+			if(content.trim().substring(1).matches(".*[A-Z].*")){
 				//check for formula with too large cell range
-				if(!content.trim().substring(1).matches(".*[A-k]([1-9][+\\-*/()].*|[1-9]|10[+\\-*/()].*)")){
+				if(!content.trim().substring(1).matches(".*[A-Z]([1-999][+\\-*/()].*|[1-999]|10[+\\-*/()].*)")){
 					throw new InvalidFormulaException("A cell name in the formula that you entered is out of range.");
 				}
 			}
