@@ -141,4 +141,9 @@ public class Spreadsheet {
 	{
 		this.cells = cells;
 	}
+	
+	public Cell getCell(int row, int column)
+	{
+		return cells[row][column];
+	}
 }
