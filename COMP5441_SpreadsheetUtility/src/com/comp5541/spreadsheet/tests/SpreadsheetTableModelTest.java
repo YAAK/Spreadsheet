@@ -48,13 +48,13 @@ public class SpreadsheetTableModelTest {
 	@Test
 	public void testSetValue() throws InvalidFormulaException, InvalidValueException {
 		SpreadsheetTableModel modeltest = SpreadsheetTableModel.getInstance();
-		modeltest.setValue("1.0", 1, 1);
-		assertEquals("1.0",modeltest.getValue(1, 1));
+		modeltest.setValue("1.0", 1, 2);
+		assertEquals("1.0",modeltest.getValue(1, 2));
 		modeltest.setValue("2.99", 0, 0);
 		assertEquals("2.99",modeltest.getValue(0, 0));
 		modeltest.setValue("100", 9, 10);
 		assertEquals("100.0",modeltest.getValue(9, 10));
-		
+		modeltest.setValue("100", 1, 1);
 	}
 
 		
@@ -77,8 +77,7 @@ public class SpreadsheetTableModelTest {
 	@Test(expected = InvalidFormulaException.class )
 	public void testSetValueInvalidFormulaException() throws InvalidFormulaException, InvalidValueException  {
 		SpreadsheetTableModel modeltest = SpreadsheetTableModel.getInstance();
-		modeltest.setValue("=M1", 1, 1);
-		
+		modeltest.setValue("=MM10", 1, 1);
 	}
 		
 
@@ -100,7 +99,7 @@ public class SpreadsheetTableModelTest {
 	@Test
 	public void testGetColumnCount() {
 		SpreadsheetTableModel modeltest = SpreadsheetTableModel.getInstance();
-		assertEquals(11,modeltest.getColumnCount());
+		assertEquals(26,modeltest.getColumnCount());
 	}
 
 	/**
@@ -109,7 +108,7 @@ public class SpreadsheetTableModelTest {
 	@Test
 	public void testGetRowCount() {
 		SpreadsheetTableModel modeltest = SpreadsheetTableModel.getInstance();
-		assertEquals(10,modeltest.getRowCount());
+		assertEquals(999,modeltest.getRowCount());
 	}
 
 	/**
@@ -124,6 +123,12 @@ public class SpreadsheetTableModelTest {
 		assertEquals("11.1" , modeltest.getValueAt(0, 0));
 		modeltest.setValueAt("999", 9, 10);
 		assertEquals("999.0" , modeltest.getValueAt(9, 10));
+		modeltest.setValueAt("123.123:S", 1, 1);
+		assertEquals("1.231e+02" , modeltest.getValueAt(1, 1));
+		modeltest.setValueAt("123.123:I", 1, 1);
+		assertEquals("123" , modeltest.getValueAt(1, 1));
+		modeltest.setValueAt("123.123:M", 1, 1);
+		assertEquals("$123.12" , modeltest.getValueAt(1, 1));
 	}
 
 }
