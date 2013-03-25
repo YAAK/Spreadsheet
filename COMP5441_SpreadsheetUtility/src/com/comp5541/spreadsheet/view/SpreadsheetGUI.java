@@ -296,7 +296,11 @@ public class SpreadsheetGUI extends javax.swing.JFrame implements MouseListener,
 					//enter cell content and compute value
 				int row = spreadsheetTable.getSelectedRow();
 				int col = spreadsheetTable.getSelectedColumn();
-				
+				if (row<0 || col<0) 
+				{
+					displayMessage("Please select a cell first!");
+					return;
+				}
 				
 					//controller.enterCellContent(cell.getRow(), cell.getColumn(), inputLineTextField.getText());
 					controller.enterCellContent( row, col, inputLineTextField.getText());
