@@ -327,7 +327,7 @@ public class CellTest {
 		Cell cellB=spreadsheet.getCell(0, 1);
 		Cell cellC=spreadsheet.getCell(0, 2);
 		cellA.setCellContent("1");
-		cellB.setCellContent("=A1+1a");
+		cellB.setFormula("=A1+1a");
 		
 		String result = cellC.getCellValue(spreadsheet.getCells());
 	}	
@@ -344,7 +344,7 @@ public class CellTest {
 		Spreadsheet spreadsheet = new Spreadsheet();
 		
 		Cell cellB=spreadsheet.getCell(0, 1);
-		cellB.setCellContent("=A2000+1");
+		cellB.setFormula("=A2000+1");
 		
 		String result = cellB.getCellValue(spreadsheet.getCells());
 	}	
