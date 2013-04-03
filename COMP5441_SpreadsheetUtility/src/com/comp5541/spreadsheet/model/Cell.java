@@ -282,14 +282,15 @@ public class Cell {
 		if(cont[1].equals("=")&&cont.length>2){//check if it's a formula
 			ret = "formula";
 			for(int i=2;i<cont.length;i++){
-				if(!cont[i].matches( "^[A-Z0-999+\\-*/()]$" )){
+				if(!cont[i].matches( "^[A-Z0-9+\\-*/()]$" )){
 					throw new InvalidFormulaException("The formula you entered does not match the syntax of a valid formula.");
 				}
 			}
 			if(content.trim().substring(1).matches(".*[A-Z].*")){
 				//check for formula with too large cell range
-				if(!content.trim().substring(1).matches(".*[A-Z]([1-999][+\\-*/()].*|[1-999]|10[+\\-*/()].*)")){
-					throw new InvalidFormulaException("A cell name in the formula that you entered is out of range.");
+				//".*[A-Z]([1-999][+\\-*/()].*|[1-999]|10[+\\-*/()].*)"
+				if(!content.trim().substring(1).matches("[^A-Z]*[A-Z]([1-9][0-9]{0,2}[+\\-*/()].*|[1-9][0-9]{0,2})")){
+					throw new InvalidFormulaException("A cell name in the formula that you entered is invalid or out of range.");
 				}
 			}
 		

@@ -112,7 +112,7 @@ public class SpreadsheetTableModelTest {
 	}
 
 	/**
-	 * setValueAt & getValueAt Tests
+	 * setValueAt & getValueAt Tests with valid values and formatting
 	 */
 	@Test
 	public void testSetValueAtObjectIntInt() {

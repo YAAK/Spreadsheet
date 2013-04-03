@@ -194,7 +194,7 @@ public class CellTest {
 	@Test(expected = InvalidFormulaException.class )
 	public void testSetCellContentWithWrongFromula() throws InvalidFormulaException, InvalidValueException{
 		Cell cell = new Cell("A1");
-		cell.setCellContent("=A23+2");
+		cell.setCellContent("=A9000+2");
 	}
 	
 	/**
@@ -325,11 +325,10 @@ public class CellTest {
 		Spreadsheet spreadsheet = new Spreadsheet();
 		Cell cellA= spreadsheet.getCell(0, 0);
 		Cell cellB=spreadsheet.getCell(0, 1);
-		Cell cellC=spreadsheet.getCell(0, 2);
 		cellA.setCellContent("1");
 		cellB.setFormula("=A1+1a");
 		
-		String result = cellC.getCellValue(spreadsheet.getCells());
+		String result = cellB.getCellValue(spreadsheet.getCells());
 	}	
 	
 

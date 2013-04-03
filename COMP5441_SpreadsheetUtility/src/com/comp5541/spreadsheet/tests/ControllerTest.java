@@ -81,6 +81,33 @@ public class ControllerTest {
 	}
 	
 	/**
+	 * Test enterCellContent with formatting options (":M, :S, :I")
+	 * @throws InvalidFormulaException
+	 * @throws InvalidValueException
+	 */
+	@Test
+	public void testEnterCellContentWithFormatting() throws InvalidFormulaException, InvalidValueException
+	{
+		//test format :M ($123.12)
+		controller.enterCellContent(0, 0, "123.123:M");
+		String expectedValue = "$123.12";
+		String actualValue = (String) model.getValueAt(0, 0);
+		Assert.assertEquals(expectedValue, actualValue);
+		
+		//test format :S (1.230e+02)
+		controller.enterCellContent(0, 0, "123:S");
+		expectedValue = "1.230e+02";
+		actualValue = (String) model.getValueAt(0, 0);
+		Assert.assertEquals(expectedValue, actualValue);
+		
+		//test format :I (123)
+		controller.enterCellContent(0, 0, "123.123:I");
+		expectedValue = "123";
+		actualValue = (String) model.getValueAt(0, 0);
+		Assert.assertEquals(expectedValue, actualValue);
+	}
+	
+	/**
 	 * test loadSpreadsheet from file with valid file name
 	 * @throws InvalidFormulaException 
 	 * @throws InvalidValueException 
